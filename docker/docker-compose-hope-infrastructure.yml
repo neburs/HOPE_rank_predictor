@@ -1,0 +1,58 @@
+version: "3.3"
+services:
+  mysql-master:
+    image: mariadb:10.4
+    environment:
+      MYSQL_ROOT_PASSWORD: hope
+    deploy:
+      replicas: 1
+      resources:
+        limits:
+          memory: 4G
+      restart_policy:
+        condition: on-failure
+    volumes:
+      - mysql-master:/var/lib/mysql
+    networks:
+      - hope-net
+
+  adminer:
+    image: adminer:4.7
+    deploy:
+      replicas: 1
+      resources:
+        limits:
+          memory: 1G
+      restart_policy:
+        condition: on-failure
+    ports:
+      - 8080:8080
+    networks:
+      - hope-net
+
+  jupyter-master:
+    build: ./custom-hope-jupyter
+    image: custom-hope-jupyter
+    deploy:
+      replicas: 1
+      resources:
+        limits:
+          memory: 4G
+      restart_policy:
+        condition: on-failure
+    volumes:
+       - jupyter-master:/home/jovyan/work
+    ports:
+      - "8888:8888"
+    networks:
+      - hope-net
+    command: ["start-notebook.sh","--NotebookApp.password='sha1:cbb165d3c62d:64c840539eb90e88fd1e6f2b3ff122d43c12b0af'"]
+    # password => test
+
+volumes:
+  mysql-master:
+  jupyter-master:
+
+networks:
+  hope-net:
+    attachable: true
