@@ -2,7 +2,7 @@
 <html>
 <head><meta charset="utf-8" />
 
-<title>S0 - HOPE extract data</title>
+<title>S2 - HOPE kNN</title>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
@@ -13086,10 +13086,7 @@ div#notebook {
 <div class="prompt input_prompt">In&nbsp;[1]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># pip install pymysql</span>
-<span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">create_engine</span>
-<span class="kn">import</span> <span class="nn">pymysql</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 </pre></div>
 
@@ -13103,13 +13100,30 @@ div#notebook {
 <div class="prompt input_prompt">In&nbsp;[2]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">dbConnectionURL</span> <span class="o">=</span> <span class="s1">&#39;mysql+pymysql://root:hope@mysql-master/hope&#39;</span>
-<span class="n">dbConnection</span> <span class="o">=</span> <span class="n">create_engine</span><span class="p">(</span><span class="n">dbConnectionURL</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">dfOrg</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;hope_dataset_cleaned.csv&#39;</span><span class="p">)</span>  
 
-<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_sql</span><span class="p">(</span><span class="s1">&#39;SELECT id, pedido, respuesta FROM fed_hope_sugerencia&#39;</span><span class="p">,</span> <span class="n">con</span><span class="o">=</span><span class="n">dbConnection</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">dfOrg</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
 </pre></div>
 
     </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>1243
+</pre>
+</div>
+</div>
+
 </div>
 </div>
 
@@ -13119,7 +13133,7 @@ div#notebook {
 <div class="prompt input_prompt">In&nbsp;[3]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">dfOrg</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -13155,71 +13169,126 @@ div#notebook {
   <thead>
     <tr style="text-align: right;">
       <th></th>
-      <th>id</th>
-      <th>pedido</th>
-      <th>respuesta</th>
+      <th>pedido.data.attributes.age</th>
+      <th>pedido.data.attributes.diagnostic_main</th>
+      <th>pedido.data.attributes.gender</th>
+      <th>articulo</th>
+      <th>respuesta.articlesRevisedYear</th>
+      <th>respuesta.articlesRevisedMonth</th>
+      <th>respuesta.pubmed_keys</th>
+      <th>utilidad</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <th>0</th>
-      <td>29</td>
-      <td>{"data":{"type":"emr--em","attributes":{"name"...</td>
-      <td>{"data":{"type":"emr--emr","id":"ef6d63fb-afe8...</td>
+      <td>75.0</td>
+      <td>FISTULA PERITONEAL</td>
+      <td>male</td>
+      <td>27395425</td>
+      <td>2018</td>
+      <td>1</td>
+      <td>Abdomen,Adenocarcinoma,Antiemetics,Blood Cultu...</td>
+      <td>1.0</td>
     </tr>
     <tr>
       <th>1</th>
-      <td>30</td>
-      <td>{"data":{"type":"emr--em","attributes":{"name"...</td>
-      <td>{"data":{"type":"emr--emr","id":"0b8a1cc8-ce17...</td>
+      <td>75.0</td>
+      <td>FISTULA PERITONEAL</td>
+      <td>male</td>
+      <td>28560554</td>
+      <td>2018</td>
+      <td>4</td>
+      <td>Abdomen,Adenocarcinoma,Antiemetics,Blood Cultu...</td>
+      <td>NaN</td>
     </tr>
     <tr>
       <th>2</th>
-      <td>31</td>
-      <td>{"data":{"type":"emr--em","attributes":{"name"...</td>
-      <td>{"data":{"type":"emr--emr","id":"25733e18-3245...</td>
+      <td>75.0</td>
+      <td>FISTULA PERITONEAL</td>
+      <td>male</td>
+      <td>28641726</td>
+      <td>2017</td>
+      <td>12</td>
+      <td>Abdomen,Adenocarcinoma,Antiemetics,Blood Cultu...</td>
+      <td>NaN</td>
     </tr>
     <tr>
       <th>3</th>
-      <td>32</td>
-      <td>{"data":{"type":"emr--em","attributes":{"name"...</td>
-      <td>{"data":{"type":"emr--emr","id":"40320232-7510...</td>
+      <td>75.0</td>
+      <td>FISTULA PERITONEAL</td>
+      <td>male</td>
+      <td>26245344</td>
+      <td>2016</td>
+      <td>12</td>
+      <td>Abdomen,Adenocarcinoma,Antiemetics,Blood Cultu...</td>
+      <td>NaN</td>
     </tr>
     <tr>
       <th>4</th>
-      <td>33</td>
-      <td>{"data":{"type":"emr--em","attributes":{"name"...</td>
-      <td>{"data":{"type":"emr--emr","id":"f686d89e-fc8e...</td>
+      <td>75.0</td>
+      <td>FISTULA PERITONEAL</td>
+      <td>male</td>
+      <td>28942543</td>
+      <td>2018</td>
+      <td>6</td>
+      <td>Abdomen,Adenocarcinoma,Antiemetics,Blood Cultu...</td>
+      <td>NaN</td>
     </tr>
     <tr>
       <th>5</th>
-      <td>34</td>
-      <td>{"data":{"type":"emr--em","attributes":{"name"...</td>
-      <td>{"data":{"type":"emr--emr","id":"d94d7c78-9941...</td>
+      <td>75.0</td>
+      <td>FISTULA PERITONEAL</td>
+      <td>male</td>
+      <td>24782153</td>
+      <td>2014</td>
+      <td>6</td>
+      <td>Abdomen,Adenocarcinoma,Antiemetics,Blood Cultu...</td>
+      <td>NaN</td>
     </tr>
     <tr>
       <th>6</th>
-      <td>35</td>
-      <td>{"data":{"type":"emr--em","attributes":{"name"...</td>
-      <td>{"data":{"type":"emr--emr","id":"0a14cc6b-af7b...</td>
+      <td>75.0</td>
+      <td>FISTULA PERITONEAL</td>
+      <td>male</td>
+      <td>28002229</td>
+      <td>2018</td>
+      <td>9</td>
+      <td>Abdomen,Adenocarcinoma,Antiemetics,Blood Cultu...</td>
+      <td>NaN</td>
     </tr>
     <tr>
       <th>7</th>
-      <td>36</td>
-      <td>{"data":{"type":"emr--em","attributes":{"name"...</td>
-      <td>{"data":{"type":"emr--emr","id":"245bb87d-b52c...</td>
+      <td>75.0</td>
+      <td>FISTULA PERITONEAL</td>
+      <td>male</td>
+      <td>27505109</td>
+      <td>2017</td>
+      <td>4</td>
+      <td>Abdomen,Adenocarcinoma,Antiemetics,Blood Cultu...</td>
+      <td>NaN</td>
     </tr>
     <tr>
       <th>8</th>
-      <td>37</td>
-      <td>{"data":{"type":"emr--em","attributes":{"name"...</td>
-      <td>{"data":{"type":"emr--emr","id":"fad05206-04f6...</td>
+      <td>75.0</td>
+      <td>FISTULA PERITONEAL</td>
+      <td>male</td>
+      <td>24850546</td>
+      <td>2015</td>
+      <td>1</td>
+      <td>Abdomen,Adenocarcinoma,Antiemetics,Blood Cultu...</td>
+      <td>NaN</td>
     </tr>
     <tr>
       <th>9</th>
-      <td>38</td>
-      <td>{"data":{"type":"emr--em","attributes":{"name"...</td>
-      <td>{"data":{"type":"emr--emr","id":"a0f8dabe-a795...</td>
+      <td>75.0</td>
+      <td>FISTULA PERITONEAL</td>
+      <td>male</td>
+      <td>29371050</td>
+      <td>2019</td>
+      <td>4</td>
+      <td>Abdomen,Adenocarcinoma,Antiemetics,Blood Cultu...</td>
+      <td>NaN</td>
     </tr>
   </tbody>
 </table>
@@ -13235,7 +13304,8 @@ div#notebook {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Remplace-ilegal-charts-in-json">Remplace ilegal charts in json<a class="anchor-link" href="#Remplace-ilegal-charts-in-json">&#182;</a></h2>
+<h2 id="Transform-(factorice)-from-Categories-to-continuous-atributes">Transform (factorice) from Categories to continuous atributes<a class="anchor-link" href="#Transform-(factorice)-from-Categories-to-continuous-atributes">&#182;</a></h2><p>Transform 'pedido.data.attributes.diagnostic_main' atribute</p>
+
 </div>
 </div>
 </div>
@@ -13244,9 +13314,13 @@ div#notebook {
 <div class="prompt input_prompt">In&nbsp;[4]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">mapping</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;</span><span class="se">\r\n</span><span class="s1">&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="sa">r</span><span class="s1">&#39;</span><span class="se">\\</span><span class="s1">.&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,}</span>
-<span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">replace</span><span class="p">({</span><span class="s1">&#39;pedido&#39;</span><span class="p">:</span> <span class="n">mapping</span><span class="p">,</span> <span class="s1">&#39;respuesta&#39;</span><span class="p">:</span> <span class="n">mapping</span><span class="p">},</span> <span class="n">regex</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">dfKNN</span> <span class="o">=</span> <span class="n">dfOrg</span>
+
+<span class="n">categoriesORGDiagnosticMain</span> <span class="o">=</span> <span class="n">dfKNN</span><span class="p">[</span><span class="s1">&#39;pedido.data.attributes.diagnostic_main&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;total: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">categoriesORGDiagnosticMain</span><span class="o">.</span><span class="n">size</span><span class="p">))</span>
+
+<span class="n">categoriesORGDiagnosticMain</span>
 </pre></div>
 
     </div>
@@ -13256,6 +13330,17 @@ div#notebook {
 <div class="output_wrapper">
 <div class="output">
 
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>total: 31
+</pre>
+</div>
+</div>
 
 <div class="output_area">
 
@@ -13263,94 +13348,40 @@ div#notebook {
 
 
 
-<div class="output_html rendered_html output_subarea output_execute_result">
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
 
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>id</th>
-      <th>pedido</th>
-      <th>respuesta</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>29</td>
-      <td>{"data":{"type":"emr--em","attributes":{"name"...</td>
-      <td>{"data":{"type":"emr--emr","id":"ef6d63fb-afe8...</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>30</td>
-      <td>{"data":{"type":"emr--em","attributes":{"name"...</td>
-      <td>{"data":{"type":"emr--emr","id":"0b8a1cc8-ce17...</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>31</td>
-      <td>{"data":{"type":"emr--em","attributes":{"name"...</td>
-      <td>{"data":{"type":"emr--emr","id":"25733e18-3245...</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>32</td>
-      <td>{"data":{"type":"emr--em","attributes":{"name"...</td>
-      <td>{"data":{"type":"emr--emr","id":"40320232-7510...</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>33</td>
-      <td>{"data":{"type":"emr--em","attributes":{"name"...</td>
-      <td>{"data":{"type":"emr--emr","id":"f686d89e-fc8e...</td>
-    </tr>
-    <tr>
-      <th>5</th>
-      <td>34</td>
-      <td>{"data":{"type":"emr--em","attributes":{"name"...</td>
-      <td>{"data":{"type":"emr--emr","id":"d94d7c78-9941...</td>
-    </tr>
-    <tr>
-      <th>6</th>
-      <td>35</td>
-      <td>{"data":{"type":"emr--em","attributes":{"name"...</td>
-      <td>{"data":{"type":"emr--emr","id":"0a14cc6b-af7b...</td>
-    </tr>
-    <tr>
-      <th>7</th>
-      <td>36</td>
-      <td>{"data":{"type":"emr--em","attributes":{"name"...</td>
-      <td>{"data":{"type":"emr--emr","id":"245bb87d-b52c...</td>
-    </tr>
-    <tr>
-      <th>8</th>
-      <td>37</td>
-      <td>{"data":{"type":"emr--em","attributes":{"name"...</td>
-      <td>{"data":{"type":"emr--emr","id":"fad05206-04f6...</td>
-    </tr>
-    <tr>
-      <th>9</th>
-      <td>38</td>
-      <td>{"data":{"type":"emr--em","attributes":{"name"...</td>
-      <td>{"data":{"type":"emr--emr","id":"a0f8dabe-a795...</td>
-    </tr>
-  </tbody>
-</table>
-</div>
+<div class="output_text output_subarea output_execute_result">
+<pre>CETOACIDOSIS DIABETICA         250
+REHABILITACION NEUROLOGICA     180
+INFECCION DE PARTES BLANDAS    170
+DOLOR ABDOMINAL                131
+INSUFICIENCIA RESPIRATORIA      90
+FISTULA PERITONEAL              40
+INFECCION URINARIA              30
+REACCION ALERGICA               30
+DIFICULTAD RESPIRATORIA         30
+CEFALEA INTENSA                 20
+ACV.ISQUEMICO                   20
+LEGRADO                         20
+PROLAPSO                        20
+CA GASTRICO                     20
+SINDROME FEBRIL                 20
+TORACOTOMIA                     11
+ABDOMEN AGUDO                   11
+NEUMONIA                        10
+HEMORRAGIA DIGESTIVA            10
+POLITRAUMATISMO                 10
+ADENOMA DE PROSTATA             10
+DOLOR                           10
+TEP                             10
+DERMOLIPECTOMIA                 10
+DISNEA                          10
+ANEMIA                          10
+DIABETES                        10
+INSUFICIENCIA CARDIACA          10
+METRORRAGIA                     10
+ARTRITIS SEPTICA                10
+LUXACION COLUMNA CERVICAL       10
+Name: pedido.data.attributes.diagnostic_main, dtype: int64</pre>
 </div>
 
 </div>
@@ -13358,243 +13389,61 @@ div#notebook {
 </div>
 </div>
 
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Flattening-JSON">Flattening JSON<a class="anchor-link" href="#Flattening-JSON">&#182;</a></h2>
-</div>
-</div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 <div class="prompt input_prompt">In&nbsp;[5]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">ast</span>
-<span class="kn">import</span> <span class="nn">json</span> 
-<span class="kn">from</span> <span class="nn">pandas</span> <span class="kn">import</span> <span class="n">read_json</span><span class="p">,</span> <span class="n">json_normalize</span> <span class="c1">#package for flattening json in pandas df</span>
-<span class="c1">#https://stackoverflow.com/questions/39899005/how-to-flatten-a-pandas-dataframe-with-some-columns-as-json</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">dataDiagnosticMain</span><span class="p">,</span> <span class="n">categoriesDiagnosticMain</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">factorize</span><span class="p">(</span><span class="n">dfKNN</span><span class="p">[</span><span class="s1">&#39;pedido.data.attributes.diagnostic_main&#39;</span><span class="p">])</span>
 
-<span class="n">pd</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">max_columns</span> <span class="o">=</span> <span class="kc">None</span>
-<span class="c1">#pd.options.display.max_rows = None</span>
+<span class="n">dfKNN</span><span class="p">[</span><span class="s1">&#39;pedido.data.attributes.diagnostic_main&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dataDiagnosticMain</span>
 </pre></div>
 
     </div>
 </div>
 </div>
 
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Transform 'gender' atribute</p>
+
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 <div class="prompt input_prompt">In&nbsp;[6]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Flatterin column &quot;Pedido&quot;</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">dataGender</span><span class="p">,</span> <span class="n">categoriesGender</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">factorize</span><span class="p">(</span><span class="n">dfKNN</span><span class="p">[</span><span class="s1">&#39;pedido.data.attributes.gender&#39;</span><span class="p">])</span>
 
-<span class="n">pedidosData</span> <span class="o">=</span> <span class="n">json_normalize</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;pedido&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span><span class="o">.</span><span class="n">add_prefix</span><span class="p">(</span><span class="s1">&#39;pedido.&#39;</span><span class="p">)</span>
-
-<span class="n">pedidosData</span>
+<span class="n">dfKNN</span><span class="p">[</span><span class="s1">&#39;pedido.data.attributes.gender&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dataGender</span>
 </pre></div>
 
     </div>
 </div>
 </div>
 
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt output_prompt">Out[6]:</div>
-
-
-
-<div class="output_html rendered_html output_subarea output_execute_result">
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>pedido.data.type</th>
-      <th>pedido.data.attributes.name</th>
-      <th>pedido.data.attributes.affected_organ</th>
-      <th>pedido.data.attributes.age</th>
-      <th>pedido.data.attributes.diagnostic_main</th>
-      <th>pedido.data.attributes.gender</th>
-      <th>pedido.data.attributes.medical_history</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>emr--em</td>
-      <td>None</td>
-      <td></td>
-      <td>75</td>
-      <td>FISTULA PERITONEAL</td>
-      <td>male</td>
-      <td>Paciente de 75 au00f1os con antecedentes de ga...</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>emr--em</td>
-      <td>None</td>
-      <td></td>
-      <td>31</td>
-      <td>REHABILITACION NEUROLOGICA</td>
-      <td>male</td>
-      <td>Paciente estable clu00ednicamente, afebril. no...</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>emr--em</td>
-      <td>None</td>
-      <td></td>
-      <td>76</td>
-      <td>INSUFICIENCIA CARDIACA</td>
-      <td>male</td>
-      <td>Paciente de 76 au00f1os con antecednetes de ar...</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>emr--em</td>
-      <td>None</td>
-      <td></td>
-      <td>75</td>
-      <td>FISTULA PERITONEAL</td>
-      <td>male</td>
-      <td>Paciente de 75 au00f1os que cursa postoperator...</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>emr--em</td>
-      <td>None</td>
-      <td></td>
-      <td>31</td>
-      <td>REHABILITACION NEUROLOGICA</td>
-      <td>male</td>
-      <td>Paciente con lesion medular a nivel D12. Arrtr...</td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-    </tr>
-    <tr>
-      <th>119</th>
-      <td>emr--em</td>
-      <td>None</td>
-      <td></td>
-      <td>74</td>
-      <td>DIFICULTAD RESPIRATORIA</td>
-      <td>male</td>
-      <td>Paciente de 74 au00f1os con antecedentes hiper...</td>
-    </tr>
-    <tr>
-      <th>120</th>
-      <td>emr--em</td>
-      <td>None</td>
-      <td></td>
-      <td>48</td>
-      <td>REHABILITACION NEUROLOGICA</td>
-      <td>male</td>
-      <td>PACIENTE SE ENCUENTRA ESTABLE HEMODINAMICAMENT...</td>
-    </tr>
-    <tr>
-      <th>121</th>
-      <td>emr--em</td>
-      <td>None</td>
-      <td></td>
-      <td>40</td>
-      <td>REHABILITACION NEUROLOGICA</td>
-      <td>male</td>
-      <td>Paciente se encuentra cursando postquiru00farg...</td>
-    </tr>
-    <tr>
-      <th>122</th>
-      <td>emr--em</td>
-      <td>None</td>
-      <td></td>
-      <td>43</td>
-      <td>TEP</td>
-      <td>male</td>
-      <td>Paciente de 43 au00f1os con antecedentes de co...</td>
-    </tr>
-    <tr>
-      <th>123</th>
-      <td>emr--em</td>
-      <td>None</td>
-      <td></td>
-      <td>37</td>
-      <td>DOLOR ABDOMINAL</td>
-      <td>male</td>
-      <td>aciente de 36 au00f1os con antecedentes de ami...</td>
-    </tr>
-  </tbody>
-</table>
-<p>124 rows × 7 columns</p>
 </div>
-</div>
-
-</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Transform 'respuesta.pubmed_keys' atribute</p>
 
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 <div class="prompt input_prompt">In&nbsp;[7]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Flatterin column &quot;respuesta&quot;</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">categoriesORGPubMedKeys</span> <span class="o">=</span> <span class="n">dfKNN</span><span class="p">[</span><span class="s1">&#39;respuesta.pubmed_keys&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
 
-<span class="k">def</span> <span class="nf">get_articles_from_respuesta</span><span class="p">(</span><span class="n">ld</span><span class="p">):</span>
-    <span class="n">jsonData</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">ld</span><span class="p">)</span>
-    <span class="n">pubmedKeys</span> <span class="o">=</span> <span class="n">jsonData</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">][</span><span class="s1">&#39;attributes&#39;</span><span class="p">][</span><span class="s1">&#39;pubmed_mt_opt&#39;</span><span class="p">]</span>
-    <span class="k">if</span> <span class="n">pubmedKeys</span> <span class="ow">is</span> <span class="kc">None</span> <span class="p">:</span> <span class="n">pubmedKeys</span> <span class="o">=</span> <span class="p">[]</span>
-
-    <span class="n">articles</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">jsonData</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">][</span><span class="s1">&#39;attributes&#39;</span><span class="p">][</span><span class="s1">&#39;pubmed&#39;</span><span class="p">][</span><span class="s1">&#39;articles&#39;</span><span class="p">])</span>
-    <span class="n">articlesIDs</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">articlesRevisedYear</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">articlesRevisedMonth</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">for</span> <span class="n">article</span> <span class="ow">in</span> <span class="n">articles</span><span class="p">:</span>
-        <span class="n">articlesIDs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">article</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">])</span>
-        <span class="n">articlesRevisedYear</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">article</span><span class="p">[</span><span class="s1">&#39;revisedDate&#39;</span><span class="p">][</span><span class="s1">&#39;Year&#39;</span><span class="p">])</span>
-        <span class="n">articlesRevisedMonth</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">article</span><span class="p">[</span><span class="s1">&#39;revisedDate&#39;</span><span class="p">][</span><span class="s1">&#39;Month&#39;</span><span class="p">])</span>
-        
-
-    <span class="k">return</span> <span class="nb">dict</span><span class="p">({</span>
-        <span class="s1">&#39;articles&#39;</span><span class="p">:</span> <span class="n">articlesIDs</span><span class="p">,</span> 
-        <span class="s1">&#39;articlesRevisedYear&#39;</span><span class="p">:</span> <span class="n">articlesRevisedYear</span><span class="p">,</span> 
-        <span class="s1">&#39;articlesRevisedMonth&#39;</span><span class="p">:</span> <span class="n">articlesRevisedMonth</span><span class="p">,</span> 
-        <span class="s1">&#39;pubmed_keys&#39;</span><span class="p">:</span> <span class="s1">&#39;,&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">pubmedKeys</span><span class="p">)</span>
-    <span class="p">})</span>
-
-
-<span class="n">respuestaData</span> <span class="o">=</span> <span class="n">json_normalize</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;respuesta&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">get_articles_from_respuesta</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span><span class="o">.</span><span class="n">add_prefix</span><span class="p">(</span><span class="s1">&#39;respuesta.&#39;</span><span class="p">)</span>
-
-<span class="n">respuestaData</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;total: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">categoriesORGPubMedKeys</span><span class="o">.</span><span class="n">size</span><span class="p">))</span>
 </pre></div>
 
     </div>
@@ -13607,292 +13456,40 @@ div#notebook {
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[7]:</div>
+    <div class="prompt"></div>
 
 
-
-<div class="output_html rendered_html output_subarea output_execute_result">
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>respuesta.articles</th>
-      <th>respuesta.articlesRevisedYear</th>
-      <th>respuesta.articlesRevisedMonth</th>
-      <th>respuesta.pubmed_keys</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>[27395425, 28560554, 28641726, 26245344, 28942...</td>
-      <td>[2018, 2018, 2017, 2016, 2018, 2014, 2018, 201...</td>
-      <td>[01, 04, 12, 12, 06, 06, 09, 04, 01, 04]</td>
-      <td>Intestines,Therapeutics,Catharsis,Wounds and I...</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>[30210096, 27617939, 27210858, 26412482, 25487...</td>
-      <td>[2019, 2017, 2017, 2017, 2016, 2016, 2019, 201...</td>
-      <td>[03, 04, 08, 06, 06, 09, 02, 03, 01, 11]</td>
-      <td>Back,Wounds and Injuries,Catheterization,Rest,...</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>[21067951, 27616270, 27532500, 28426556, 27495...</td>
-      <td>[2011, 2017, 2017, 2019, 2017, 2009, 2017, 201...</td>
-      <td>[03, 07, 05, 01, 07, 03, 06, 05, 03, 03]</td>
-      <td>Heart Murmurs,Intestines,Lactic Acid,Therapeut...</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>[30179656, 28641726, 28694230, 27796647, 28867...</td>
-      <td>[2019, 2017, 2018, 2017, 2017, 2017, 2015, 201...</td>
-      <td>[03, 12, 05, 02, 11, 05, 08, 06, 01, 08]</td>
-      <td>Intestines,Therapeutics,Catharsis,Lower Extrem...</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>[29787536, 24840763, 28273653, 26836795, 26409...</td>
-      <td>[2019, 2014, 2017, 2016, 2016, 2019, 2013, 201...</td>
-      <td>[05, 10, 11, 11, 05, 04, 03, 09, 02, 12]</td>
-      <td>Abdomen,Catheterization,Headache,Diuresis,Extr...</td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-    </tr>
-    <tr>
-      <th>119</th>
-      <td>[28641726, 30179656, 28694230, 27796647, 28867...</td>
-      <td>[2017, 2019, 2018, 2017, 2017, 2017, 2017, 201...</td>
-      <td>[12, 03, 05, 02, 11, 05, 09, 09, 01, 03]</td>
-      <td>Extremities,Catharsis,Tazobactam,Abdomen,Oxyge...</td>
-    </tr>
-    <tr>
-      <th>120</th>
-      <td>[27128826, 30336861, 30226191, 29371130, 29587...</td>
-      <td>[2017, 2019, 2019, 2018, 2018, 2019, 2019, 201...</td>
-      <td>[04, 01, 09, 10, 08, 01, 06, 08, 11, 04]</td>
-      <td>Catharsis,Abdomen,Lung</td>
-    </tr>
-    <tr>
-      <th>121</th>
-      <td>[30595510, 21554494, 26465238, 26875969, 30056...</td>
-      <td>[2019, 2012, 2016, 2016, 2019, 2019, 2016, 201...</td>
-      <td>[03, 04, 09, 08, 07, 10, 10, 05, 10, 06]</td>
-      <td>Abdomen,Wounds and Injuries,Lung,Stroke,Aphasi...</td>
-    </tr>
-    <tr>
-      <th>122</th>
-      <td>[30081165, 30629460, 26220984, 25749853, 28545...</td>
-      <td>[2018, 2019, 2016, 2016, 2018, 2020, 2015, 201...</td>
-      <td>[12, 03, 06, 04, 12, 02, 02, 09, 05, 04]</td>
-      <td>Extremities,Catharsis,Thromboembolism,Foramen ...</td>
-    </tr>
-    <tr>
-      <th>123</th>
-      <td>[30662053, 29879068, 26849395, 31061178, 31223...</td>
-      <td>[2019, 2018, 2016, 2019, 2019, 2019, 2018, 201...</td>
-      <td>[02, 06, 12, 12, 07, 03, 12, 05, 04, 04]</td>
-      <td>Fever,Catharsis,Infections,Abdominal Pain,Abdo...</td>
-    </tr>
-  </tbody>
-</table>
-<p>124 rows × 4 columns</p>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>total: 80
+</pre>
 </div>
-</div>
-
 </div>
 
 </div>
 </div>
 
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Reorder-keys-alphabetically">Reorder keys alphabetically<a class="anchor-link" href="#Reorder-keys-alphabetically">&#182;</a></h2>
-</div>
-</div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 <div class="prompt input_prompt">In&nbsp;[8]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">get_keys_ordered</span><span class="p">(</span><span class="n">keys</span><span class="p">):</span>
-    <span class="n">keysList</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">keys</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)]</span>
-    <span class="n">keysList</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
-    <span class="k">return</span> <span class="s2">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">keysList</span><span class="p">)</span>
-    
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">dataPubMedKeys</span><span class="p">,</span> <span class="n">categoriesPubMedKeys</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">factorize</span><span class="p">(</span><span class="n">dfKNN</span><span class="p">[</span><span class="s1">&#39;respuesta.pubmed_keys&#39;</span><span class="p">])</span>
 
-<span class="n">respuestaData</span><span class="p">[</span><span class="s1">&#39;respuesta.pubmed_keys&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">respuestaData</span><span class="p">[</span><span class="s1">&#39;respuesta.pubmed_keys&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span> <span class="p">:</span> <span class="n">get_keys_ordered</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
-
-<span class="n">respuestaData</span>
+<span class="n">dfKNN</span><span class="p">[</span><span class="s1">&#39;respuesta.pubmed_keys&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dataPubMedKeys</span>
 </pre></div>
 
     </div>
 </div>
 </div>
 
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt output_prompt">Out[8]:</div>
-
-
-
-<div class="output_html rendered_html output_subarea output_execute_result">
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>respuesta.articles</th>
-      <th>respuesta.articlesRevisedYear</th>
-      <th>respuesta.articlesRevisedMonth</th>
-      <th>respuesta.pubmed_keys</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>[27395425, 28560554, 28641726, 26245344, 28942...</td>
-      <td>[2018, 2018, 2017, 2016, 2018, 2014, 2018, 201...</td>
-      <td>[01, 04, 12, 12, 06, 06, 09, 04, 01, 04]</td>
-      <td>Abdomen,Adenocarcinoma,Antiemetics,Blood Cultu...</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>[30210096, 27617939, 27210858, 26412482, 25487...</td>
-      <td>[2019, 2017, 2017, 2017, 2016, 2016, 2019, 201...</td>
-      <td>[03, 04, 08, 06, 06, 09, 02, 03, 01, 11]</td>
-      <td>Back,Catheterization,Dyshidrotic,Eczema,Micona...</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>[21067951, 27616270, 27532500, 28426556, 27495...</td>
-      <td>[2011, 2017, 2017, 2019, 2017, 2009, 2017, 201...</td>
-      <td>[03, 07, 05, 01, 07, 03, 06, 05, 03, 03]</td>
-      <td>Abdomen,Acidosis,Anemia,Arthritis,Arthritis,Be...</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>[30179656, 28641726, 28694230, 27796647, 28867...</td>
-      <td>[2019, 2017, 2018, 2017, 2017, 2017, 2015, 201...</td>
-      <td>[03, 12, 05, 02, 11, 05, 08, 06, 01, 08]</td>
-      <td>Abdomen,Blood Culture,Catharsis,Diuresis,Drug ...</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>[29787536, 24840763, 28273653, 26836795, 26409...</td>
-      <td>[2019, 2014, 2017, 2016, 2016, 2019, 2013, 201...</td>
-      <td>[05, 10, 11, 11, 05, 04, 03, 09, 02, 12]</td>
-      <td>Abdomen,Catheterization,Diuresis,Extremities,H...</td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-    </tr>
-    <tr>
-      <th>119</th>
-      <td>[28641726, 30179656, 28694230, 27796647, 28867...</td>
-      <td>[2017, 2019, 2018, 2017, 2017, 2017, 2017, 201...</td>
-      <td>[12, 03, 05, 02, 11, 05, 09, 09, 01, 03]</td>
-      <td>Abdomen,Catharsis,Cough,Diarrhea,Diuresis,Extr...</td>
-    </tr>
-    <tr>
-      <th>120</th>
-      <td>[27128826, 30336861, 30226191, 29371130, 29587...</td>
-      <td>[2017, 2019, 2019, 2018, 2018, 2019, 2019, 201...</td>
-      <td>[04, 01, 09, 10, 08, 01, 06, 08, 11, 04]</td>
-      <td>Abdomen,Catharsis,Lung</td>
-    </tr>
-    <tr>
-      <th>121</th>
-      <td>[30595510, 21554494, 26465238, 26875969, 30056...</td>
-      <td>[2019, 2012, 2016, 2016, 2019, 2019, 2016, 201...</td>
-      <td>[03, 04, 09, 08, 07, 10, 10, 05, 10, 06]</td>
-      <td>Abdomen,Aphasia,Aphasia,Broca,Lung,Paresis,Sig...</td>
-    </tr>
-    <tr>
-      <th>122</th>
-      <td>[30081165, 30629460, 26220984, 25749853, 28545...</td>
-      <td>[2018, 2019, 2016, 2016, 2018, 2020, 2015, 201...</td>
-      <td>[12, 03, 06, 04, 12, 02, 02, 09, 05, 04]</td>
-      <td>Abdomen,Acenocoumarol,Arteries,Catharsis,Cathe...</td>
-    </tr>
-    <tr>
-      <th>123</th>
-      <td>[30662053, 29879068, 26849395, 31061178, 31223...</td>
-      <td>[2019, 2018, 2016, 2019, 2019, 2019, 2018, 201...</td>
-      <td>[02, 06, 12, 12, 07, 03, 12, 05, 04, 04]</td>
-      <td>Abdomen,Abdominal Pain,Analgesics,Catharsis,Cy...</td>
-    </tr>
-  </tbody>
-</table>
-<p>124 rows × 4 columns</p>
-</div>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Join-data">Join data<a class="anchor-link" href="#Join-data">&#182;</a></h2>
-</div>
-</div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 <div class="prompt input_prompt">In&nbsp;[9]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">dfCleaned</span> <span class="o">=</span> <span class="n">df</span><span class="p">[[</span><span class="s1">&#39;id&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">pedidosData</span><span class="p">,</span><span class="n">respuestaData</span><span class="p">])</span>
-
-<span class="n">dfCleaned</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">dfKNN</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -13928,170 +13525,126 @@ div#notebook {
   <thead>
     <tr style="text-align: right;">
       <th></th>
-      <th>id</th>
-      <th>pedido.data.type</th>
-      <th>pedido.data.attributes.name</th>
-      <th>pedido.data.attributes.affected_organ</th>
       <th>pedido.data.attributes.age</th>
       <th>pedido.data.attributes.diagnostic_main</th>
       <th>pedido.data.attributes.gender</th>
-      <th>pedido.data.attributes.medical_history</th>
-      <th>respuesta.articles</th>
+      <th>articulo</th>
       <th>respuesta.articlesRevisedYear</th>
       <th>respuesta.articlesRevisedMonth</th>
       <th>respuesta.pubmed_keys</th>
+      <th>utilidad</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <th>0</th>
-      <td>29</td>
-      <td>emr--em</td>
-      <td>None</td>
-      <td></td>
-      <td>75</td>
-      <td>FISTULA PERITONEAL</td>
-      <td>male</td>
-      <td>Paciente de 75 au00f1os con antecedentes de ga...</td>
-      <td>[27395425, 28560554, 28641726, 26245344, 28942...</td>
-      <td>[2018, 2018, 2017, 2016, 2018, 2014, 2018, 201...</td>
-      <td>[01, 04, 12, 12, 06, 06, 09, 04, 01, 04]</td>
-      <td>Abdomen,Adenocarcinoma,Antiemetics,Blood Cultu...</td>
+      <td>75.0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>27395425</td>
+      <td>2018</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1.0</td>
     </tr>
     <tr>
       <th>1</th>
-      <td>30</td>
-      <td>emr--em</td>
-      <td>None</td>
-      <td></td>
-      <td>31</td>
-      <td>REHABILITACION NEUROLOGICA</td>
-      <td>male</td>
-      <td>Paciente estable clu00ednicamente, afebril. no...</td>
-      <td>[30210096, 27617939, 27210858, 26412482, 25487...</td>
-      <td>[2019, 2017, 2017, 2017, 2016, 2016, 2019, 201...</td>
-      <td>[03, 04, 08, 06, 06, 09, 02, 03, 01, 11]</td>
-      <td>Back,Catheterization,Dyshidrotic,Eczema,Micona...</td>
+      <td>75.0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>28560554</td>
+      <td>2018</td>
+      <td>4</td>
+      <td>0</td>
+      <td>NaN</td>
     </tr>
     <tr>
       <th>2</th>
-      <td>31</td>
-      <td>emr--em</td>
-      <td>None</td>
-      <td></td>
-      <td>76</td>
-      <td>INSUFICIENCIA CARDIACA</td>
-      <td>male</td>
-      <td>Paciente de 76 au00f1os con antecednetes de ar...</td>
-      <td>[21067951, 27616270, 27532500, 28426556, 27495...</td>
-      <td>[2011, 2017, 2017, 2019, 2017, 2009, 2017, 201...</td>
-      <td>[03, 07, 05, 01, 07, 03, 06, 05, 03, 03]</td>
-      <td>Abdomen,Acidosis,Anemia,Arthritis,Arthritis,Be...</td>
+      <td>75.0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>28641726</td>
+      <td>2017</td>
+      <td>12</td>
+      <td>0</td>
+      <td>NaN</td>
     </tr>
     <tr>
       <th>3</th>
-      <td>32</td>
-      <td>emr--em</td>
-      <td>None</td>
-      <td></td>
-      <td>75</td>
-      <td>FISTULA PERITONEAL</td>
-      <td>male</td>
-      <td>Paciente de 75 au00f1os que cursa postoperator...</td>
-      <td>[30179656, 28641726, 28694230, 27796647, 28867...</td>
-      <td>[2019, 2017, 2018, 2017, 2017, 2017, 2015, 201...</td>
-      <td>[03, 12, 05, 02, 11, 05, 08, 06, 01, 08]</td>
-      <td>Abdomen,Blood Culture,Catharsis,Diuresis,Drug ...</td>
+      <td>75.0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>26245344</td>
+      <td>2016</td>
+      <td>12</td>
+      <td>0</td>
+      <td>NaN</td>
     </tr>
     <tr>
       <th>4</th>
-      <td>33</td>
-      <td>emr--em</td>
-      <td>None</td>
-      <td></td>
-      <td>31</td>
-      <td>REHABILITACION NEUROLOGICA</td>
-      <td>male</td>
-      <td>Paciente con lesion medular a nivel D12. Arrtr...</td>
-      <td>[29787536, 24840763, 28273653, 26836795, 26409...</td>
-      <td>[2019, 2014, 2017, 2016, 2016, 2019, 2013, 201...</td>
-      <td>[05, 10, 11, 11, 05, 04, 03, 09, 02, 12]</td>
-      <td>Abdomen,Catheterization,Diuresis,Extremities,H...</td>
+      <td>75.0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>28942543</td>
+      <td>2018</td>
+      <td>6</td>
+      <td>0</td>
+      <td>NaN</td>
     </tr>
     <tr>
       <th>5</th>
-      <td>34</td>
-      <td>emr--em</td>
-      <td>None</td>
-      <td></td>
-      <td>52</td>
-      <td>CEFALEA INTENSA</td>
-      <td>male</td>
-      <td>Paciente de 52 au00f1os con antecedentes de me...</td>
-      <td>[29618703, 29866680, 27209571, 25304079, 28474...</td>
-      <td>[2019, 2018, 2017, 2015, 2018, 2018, 2014, 201...</td>
-      <td>[02, 11, 03, 09, 04, 12, 09, 03, 02, 09]</td>
-      <td>Abdomen,Anticonvulsants,Axilla,Biopsy,Extremit...</td>
+      <td>75.0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>24782153</td>
+      <td>2014</td>
+      <td>6</td>
+      <td>0</td>
+      <td>NaN</td>
     </tr>
     <tr>
       <th>6</th>
-      <td>35</td>
-      <td>emr--em</td>
-      <td>None</td>
-      <td></td>
-      <td>41</td>
-      <td>LEGRADO</td>
-      <td>male</td>
-      <td>ANTECEDENTES:HIPERTENSION ARTERIAL HACE 15  EV...</td>
-      <td>[26609031, 24002584, 20176351, 19521237, 30243...</td>
-      <td>[2016, 2014, 2010, 2009, 2019, 2019, 2019, 201...</td>
-      <td>[11, 09, 08, 12, 02, 03, 02, 10, 02, 03]</td>
-      <td>Cellulite,Cellulitis,Conjunctiva,Cysts,Edema,E...</td>
+      <td>75.0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>28002229</td>
+      <td>2018</td>
+      <td>9</td>
+      <td>0</td>
+      <td>NaN</td>
     </tr>
     <tr>
       <th>7</th>
-      <td>36</td>
-      <td>emr--em</td>
-      <td>None</td>
-      <td></td>
-      <td>52</td>
-      <td>CEFALEA INTENSA</td>
-      <td>male</td>
-      <td>Paciente con antecedentes de melanoma hace 4 a...</td>
-      <td>[29618703, 24310475, 25304079, 28592387, 28474...</td>
-      <td>[2019, 2014, 2015, 2017, 2018, 2016, 2010, 201...</td>
-      <td>[02, 07, 09, 09, 04, 03, 03, 09, 02, 12]</td>
-      <td>Abdomen,Axilla,Catharsis,Conscience,Diuresis,E...</td>
+      <td>75.0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>27505109</td>
+      <td>2017</td>
+      <td>4</td>
+      <td>0</td>
+      <td>NaN</td>
     </tr>
     <tr>
       <th>8</th>
-      <td>37</td>
-      <td>emr--em</td>
-      <td>None</td>
-      <td></td>
-      <td>67</td>
-      <td>REHABILITACION NEUROLOGICA</td>
-      <td>male</td>
-      <td>Paciente reingresa traido de CMIC tras recambi...</td>
-      <td>[28760799, 26099617, 22584817, 25559313, 27555...</td>
-      <td>[2018, 2016, 2013, 2015, 2017, 2011, 2014, 201...</td>
-      <td>[04, 10, 06, 06, 08, 10, 09, 09, 01, 10]</td>
-      <td>Abdomen,Central Nervous System,Heart Murmurs,H...</td>
+      <td>75.0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>24850546</td>
+      <td>2015</td>
+      <td>1</td>
+      <td>0</td>
+      <td>NaN</td>
     </tr>
     <tr>
       <th>9</th>
-      <td>38</td>
-      <td>emr--em</td>
-      <td>None</td>
-      <td></td>
-      <td>71</td>
-      <td>REHABILITACION NEUROLOGICA</td>
-      <td>male</td>
-      <td>Paciente controlado en consultorio se observa ...</td>
-      <td>[21665344, 29563376, 27881312, 26486203, 29621...</td>
-      <td>[2011, 2018, 2018, 2017, 2019, 2018, 2013, 201...</td>
-      <td>[12, 04, 05, 05, 01, 10, 09, 08, 11, 04]</td>
-      <td>Cheek,Hematoma,Maxilla,Pain,Palpation</td>
+      <td>75.0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>29371050</td>
+      <td>2019</td>
+      <td>4</td>
+      <td>0</td>
+      <td>NaN</td>
     </tr>
   </tbody>
 </table>
@@ -14104,30 +13657,19 @@ div#notebook {
 </div>
 
 </div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Expand-Articles">Expand Articles<a class="anchor-link" href="#Expand-Articles">&#182;</a></h2>
-</div>
-</div>
-</div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 <div class="prompt input_prompt">In&nbsp;[10]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">dfCleaned</span> <span class="o">=</span> <span class="n">dfCleaned</span><span class="o">.</span><span class="n">explode</span><span class="p">(</span><span class="s1">&#39;respuesta.articles&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-
-<span class="c1"># Expand Articles Year</span>
-<span class="n">dfCleanedArticlesRevisedYear</span> <span class="o">=</span> <span class="n">dfCleaned</span><span class="o">.</span><span class="n">explode</span><span class="p">(</span><span class="s1">&#39;respuesta.articlesRevisedYear&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">dfCleaned</span><span class="p">[</span><span class="s1">&#39;respuesta.articlesRevisedYear&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dfCleanedArticlesRevisedYear</span><span class="p">[</span><span class="s1">&#39;respuesta.articlesRevisedYear&#39;</span><span class="p">]</span>
-
-<span class="c1"># Expand Articles Month</span>
-<span class="n">dfCleanedArticlesRevisedMonth</span> <span class="o">=</span> <span class="n">dfCleaned</span><span class="o">.</span><span class="n">explode</span><span class="p">(</span><span class="s1">&#39;respuesta.articlesRevisedMonth&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">dfCleaned</span><span class="p">[</span><span class="s1">&#39;respuesta.articlesRevisedMonth&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dfCleanedArticlesRevisedMonth</span><span class="p">[</span><span class="s1">&#39;respuesta.articlesRevisedMonth&#39;</span><span class="p">]</span>
-
-
-<span class="n">dfCleaned</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;age NaN =&gt; &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">dfKNN</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">isnull</span><span class="p">(</span><span class="n">dfKNN</span><span class="p">[</span><span class="s1">&#39;pedido.data.attributes.age&#39;</span><span class="p">])]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;diagnostic_main NaN =&gt; &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">dfKNN</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">isnull</span><span class="p">(</span><span class="n">dfKNN</span><span class="p">[</span><span class="s1">&#39;pedido.data.attributes.diagnostic_main&#39;</span><span class="p">])]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;gender NaN =&gt; &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">dfKNN</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">isnull</span><span class="p">(</span><span class="n">dfKNN</span><span class="p">[</span><span class="s1">&#39;pedido.data.attributes.gender&#39;</span><span class="p">])]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;articulo NaN =&gt; &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">dfKNN</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">isnull</span><span class="p">(</span><span class="n">dfKNN</span><span class="p">[</span><span class="s1">&#39;articulo&#39;</span><span class="p">])]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;articlesRevisedYear NaN =&gt; &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">dfKNN</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">isnull</span><span class="p">(</span><span class="n">dfKNN</span><span class="p">[</span><span class="s1">&#39;respuesta.articlesRevisedYear&#39;</span><span class="p">])]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;articlesRevisedMonth NaN =&gt; &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">dfKNN</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">isnull</span><span class="p">(</span><span class="n">dfKNN</span><span class="p">[</span><span class="s1">&#39;respuesta.articlesRevisedMonth&#39;</span><span class="p">])]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;pubmed_keys NaN =&gt; &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">dfKNN</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">isnull</span><span class="p">(</span><span class="n">dfKNN</span><span class="p">[</span><span class="s1">&#39;respuesta.pubmed_keys&#39;</span><span class="p">])]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;utilidad NaN =&gt; &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">dfKNN</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">isnull</span><span class="p">(</span><span class="n">dfKNN</span><span class="p">[</span><span class="s1">&#39;utilidad&#39;</span><span class="p">])]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
 </pre></div>
 
     </div>
@@ -14140,215 +13682,20 @@ div#notebook {
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[10]:</div>
+    <div class="prompt"></div>
 
 
-
-<div class="output_html rendered_html output_subarea output_execute_result">
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>id</th>
-      <th>pedido.data.type</th>
-      <th>pedido.data.attributes.name</th>
-      <th>pedido.data.attributes.affected_organ</th>
-      <th>pedido.data.attributes.age</th>
-      <th>pedido.data.attributes.diagnostic_main</th>
-      <th>pedido.data.attributes.gender</th>
-      <th>pedido.data.attributes.medical_history</th>
-      <th>respuesta.articles</th>
-      <th>respuesta.articlesRevisedYear</th>
-      <th>respuesta.articlesRevisedMonth</th>
-      <th>respuesta.pubmed_keys</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>29</td>
-      <td>emr--em</td>
-      <td>None</td>
-      <td></td>
-      <td>75</td>
-      <td>FISTULA PERITONEAL</td>
-      <td>male</td>
-      <td>Paciente de 75 au00f1os con antecedentes de ga...</td>
-      <td>27395425</td>
-      <td>2018</td>
-      <td>01</td>
-      <td>Abdomen,Adenocarcinoma,Antiemetics,Blood Cultu...</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>29</td>
-      <td>emr--em</td>
-      <td>None</td>
-      <td></td>
-      <td>75</td>
-      <td>FISTULA PERITONEAL</td>
-      <td>male</td>
-      <td>Paciente de 75 au00f1os con antecedentes de ga...</td>
-      <td>28560554</td>
-      <td>2018</td>
-      <td>04</td>
-      <td>Abdomen,Adenocarcinoma,Antiemetics,Blood Cultu...</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>29</td>
-      <td>emr--em</td>
-      <td>None</td>
-      <td></td>
-      <td>75</td>
-      <td>FISTULA PERITONEAL</td>
-      <td>male</td>
-      <td>Paciente de 75 au00f1os con antecedentes de ga...</td>
-      <td>28641726</td>
-      <td>2017</td>
-      <td>12</td>
-      <td>Abdomen,Adenocarcinoma,Antiemetics,Blood Cultu...</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>29</td>
-      <td>emr--em</td>
-      <td>None</td>
-      <td></td>
-      <td>75</td>
-      <td>FISTULA PERITONEAL</td>
-      <td>male</td>
-      <td>Paciente de 75 au00f1os con antecedentes de ga...</td>
-      <td>26245344</td>
-      <td>2016</td>
-      <td>12</td>
-      <td>Abdomen,Adenocarcinoma,Antiemetics,Blood Cultu...</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>29</td>
-      <td>emr--em</td>
-      <td>None</td>
-      <td></td>
-      <td>75</td>
-      <td>FISTULA PERITONEAL</td>
-      <td>male</td>
-      <td>Paciente de 75 au00f1os con antecedentes de ga...</td>
-      <td>28942543</td>
-      <td>2018</td>
-      <td>06</td>
-      <td>Abdomen,Adenocarcinoma,Antiemetics,Blood Cultu...</td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-    </tr>
-    <tr>
-      <th>1235</th>
-      <td>152</td>
-      <td>emr--em</td>
-      <td>None</td>
-      <td></td>
-      <td>37</td>
-      <td>DOLOR ABDOMINAL</td>
-      <td>male</td>
-      <td>aciente de 36 au00f1os con antecedentes de ami...</td>
-      <td>29975804</td>
-      <td>2016</td>
-      <td>01</td>
-      <td>Abdomen,Abdominal Pain,Analgesics,Catharsis,Cy...</td>
-    </tr>
-    <tr>
-      <th>1236</th>
-      <td>152</td>
-      <td>emr--em</td>
-      <td>None</td>
-      <td></td>
-      <td>37</td>
-      <td>DOLOR ABDOMINAL</td>
-      <td>male</td>
-      <td>aciente de 36 au00f1os con antecedentes de ami...</td>
-      <td>26362243</td>
-      <td>2019</td>
-      <td>04</td>
-      <td>Abdomen,Abdominal Pain,Analgesics,Catharsis,Cy...</td>
-    </tr>
-    <tr>
-      <th>1237</th>
-      <td>152</td>
-      <td>emr--em</td>
-      <td>None</td>
-      <td></td>
-      <td>37</td>
-      <td>DOLOR ABDOMINAL</td>
-      <td>male</td>
-      <td>aciente de 36 au00f1os con antecedentes de ami...</td>
-      <td>30711130</td>
-      <td>2015</td>
-      <td>10</td>
-      <td>Abdomen,Abdominal Pain,Analgesics,Catharsis,Cy...</td>
-    </tr>
-    <tr>
-      <th>1238</th>
-      <td>152</td>
-      <td>emr--em</td>
-      <td>None</td>
-      <td></td>
-      <td>37</td>
-      <td>DOLOR ABDOMINAL</td>
-      <td>male</td>
-      <td>aciente de 36 au00f1os con antecedentes de ami...</td>
-      <td>27932159</td>
-      <td>2019</td>
-      <td>05</td>
-      <td>Abdomen,Abdominal Pain,Analgesics,Catharsis,Cy...</td>
-    </tr>
-    <tr>
-      <th>1239</th>
-      <td>152</td>
-      <td>emr--em</td>
-      <td>None</td>
-      <td></td>
-      <td>37</td>
-      <td>DOLOR ABDOMINAL</td>
-      <td>male</td>
-      <td>aciente de 36 au00f1os con antecedentes de ami...</td>
-      <td>19104113</td>
-      <td>2015</td>
-      <td>02</td>
-      <td>Abdomen,Abdominal Pain,Analgesics,Catharsis,Cy...</td>
-    </tr>
-  </tbody>
-</table>
-<p>1240 rows × 12 columns</p>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>age NaN =&gt; 10
+diagnostic_main NaN =&gt; 0
+gender NaN =&gt; 0
+articulo NaN =&gt; 0
+articlesRevisedYear NaN =&gt; 0
+articlesRevisedMonth NaN =&gt; 0
+pubmed_keys NaN =&gt; 0
+utilidad NaN =&gt; 1192
+</pre>
 </div>
-</div>
-
 </div>
 
 </div>
@@ -14358,7 +13705,8 @@ div#notebook {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Create-column-with-join-of-id-and-article-id-to-join-with-feedback">Create column with join of id and article id to join with feedback<a class="anchor-link" href="#Create-column-with-join-of-id-and-article-id-to-join-with-feedback">&#182;</a></h2>
+<p>Remove row with age eq NaN</p>
+
 </div>
 </div>
 </div>
@@ -14367,244 +13715,10 @@ div#notebook {
 <div class="prompt input_prompt">In&nbsp;[11]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">dfCleaned</span><span class="p">[</span><span class="s1">&#39;sugerencia_id_+_articles_id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dfCleaned</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;_&quot;</span> <span class="o">+</span> <span class="n">dfCleaned</span><span class="p">[</span><span class="s1">&#39;respuesta.articles&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span> 
-
-<span class="n">dfCleaned</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">dfKNN</span> <span class="o">=</span> <span class="n">dfKNN</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">notnull</span><span class="p">(</span><span class="n">dfKNN</span><span class="p">[</span><span class="s1">&#39;pedido.data.attributes.age&#39;</span><span class="p">])]</span>
 </pre></div>
 
     </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt output_prompt">Out[11]:</div>
-
-
-
-<div class="output_html rendered_html output_subarea output_execute_result">
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>id</th>
-      <th>pedido.data.type</th>
-      <th>pedido.data.attributes.name</th>
-      <th>pedido.data.attributes.affected_organ</th>
-      <th>pedido.data.attributes.age</th>
-      <th>pedido.data.attributes.diagnostic_main</th>
-      <th>pedido.data.attributes.gender</th>
-      <th>pedido.data.attributes.medical_history</th>
-      <th>respuesta.articles</th>
-      <th>respuesta.articlesRevisedYear</th>
-      <th>respuesta.articlesRevisedMonth</th>
-      <th>respuesta.pubmed_keys</th>
-      <th>sugerencia_id_+_articles_id</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>29</td>
-      <td>emr--em</td>
-      <td>None</td>
-      <td></td>
-      <td>75</td>
-      <td>FISTULA PERITONEAL</td>
-      <td>male</td>
-      <td>Paciente de 75 au00f1os con antecedentes de ga...</td>
-      <td>27395425</td>
-      <td>2018</td>
-      <td>01</td>
-      <td>Abdomen,Adenocarcinoma,Antiemetics,Blood Cultu...</td>
-      <td>29_27395425</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>29</td>
-      <td>emr--em</td>
-      <td>None</td>
-      <td></td>
-      <td>75</td>
-      <td>FISTULA PERITONEAL</td>
-      <td>male</td>
-      <td>Paciente de 75 au00f1os con antecedentes de ga...</td>
-      <td>28560554</td>
-      <td>2018</td>
-      <td>04</td>
-      <td>Abdomen,Adenocarcinoma,Antiemetics,Blood Cultu...</td>
-      <td>29_28560554</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>29</td>
-      <td>emr--em</td>
-      <td>None</td>
-      <td></td>
-      <td>75</td>
-      <td>FISTULA PERITONEAL</td>
-      <td>male</td>
-      <td>Paciente de 75 au00f1os con antecedentes de ga...</td>
-      <td>28641726</td>
-      <td>2017</td>
-      <td>12</td>
-      <td>Abdomen,Adenocarcinoma,Antiemetics,Blood Cultu...</td>
-      <td>29_28641726</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>29</td>
-      <td>emr--em</td>
-      <td>None</td>
-      <td></td>
-      <td>75</td>
-      <td>FISTULA PERITONEAL</td>
-      <td>male</td>
-      <td>Paciente de 75 au00f1os con antecedentes de ga...</td>
-      <td>26245344</td>
-      <td>2016</td>
-      <td>12</td>
-      <td>Abdomen,Adenocarcinoma,Antiemetics,Blood Cultu...</td>
-      <td>29_26245344</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>29</td>
-      <td>emr--em</td>
-      <td>None</td>
-      <td></td>
-      <td>75</td>
-      <td>FISTULA PERITONEAL</td>
-      <td>male</td>
-      <td>Paciente de 75 au00f1os con antecedentes de ga...</td>
-      <td>28942543</td>
-      <td>2018</td>
-      <td>06</td>
-      <td>Abdomen,Adenocarcinoma,Antiemetics,Blood Cultu...</td>
-      <td>29_28942543</td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-    </tr>
-    <tr>
-      <th>1235</th>
-      <td>152</td>
-      <td>emr--em</td>
-      <td>None</td>
-      <td></td>
-      <td>37</td>
-      <td>DOLOR ABDOMINAL</td>
-      <td>male</td>
-      <td>aciente de 36 au00f1os con antecedentes de ami...</td>
-      <td>29975804</td>
-      <td>2016</td>
-      <td>01</td>
-      <td>Abdomen,Abdominal Pain,Analgesics,Catharsis,Cy...</td>
-      <td>152_29975804</td>
-    </tr>
-    <tr>
-      <th>1236</th>
-      <td>152</td>
-      <td>emr--em</td>
-      <td>None</td>
-      <td></td>
-      <td>37</td>
-      <td>DOLOR ABDOMINAL</td>
-      <td>male</td>
-      <td>aciente de 36 au00f1os con antecedentes de ami...</td>
-      <td>26362243</td>
-      <td>2019</td>
-      <td>04</td>
-      <td>Abdomen,Abdominal Pain,Analgesics,Catharsis,Cy...</td>
-      <td>152_26362243</td>
-    </tr>
-    <tr>
-      <th>1237</th>
-      <td>152</td>
-      <td>emr--em</td>
-      <td>None</td>
-      <td></td>
-      <td>37</td>
-      <td>DOLOR ABDOMINAL</td>
-      <td>male</td>
-      <td>aciente de 36 au00f1os con antecedentes de ami...</td>
-      <td>30711130</td>
-      <td>2015</td>
-      <td>10</td>
-      <td>Abdomen,Abdominal Pain,Analgesics,Catharsis,Cy...</td>
-      <td>152_30711130</td>
-    </tr>
-    <tr>
-      <th>1238</th>
-      <td>152</td>
-      <td>emr--em</td>
-      <td>None</td>
-      <td></td>
-      <td>37</td>
-      <td>DOLOR ABDOMINAL</td>
-      <td>male</td>
-      <td>aciente de 36 au00f1os con antecedentes de ami...</td>
-      <td>27932159</td>
-      <td>2019</td>
-      <td>05</td>
-      <td>Abdomen,Abdominal Pain,Analgesics,Catharsis,Cy...</td>
-      <td>152_27932159</td>
-    </tr>
-    <tr>
-      <th>1239</th>
-      <td>152</td>
-      <td>emr--em</td>
-      <td>None</td>
-      <td></td>
-      <td>37</td>
-      <td>DOLOR ABDOMINAL</td>
-      <td>male</td>
-      <td>aciente de 36 au00f1os con antecedentes de ami...</td>
-      <td>19104113</td>
-      <td>2015</td>
-      <td>02</td>
-      <td>Abdomen,Abdominal Pain,Analgesics,Catharsis,Cy...</td>
-      <td>152_19104113</td>
-    </tr>
-  </tbody>
-</table>
-<p>1240 rows × 13 columns</p>
-</div>
-</div>
-
-</div>
-
 </div>
 </div>
 
@@ -14612,7 +13726,7 @@ div#notebook {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Remove-unnecessary-columns">Remove unnecessary columns<a class="anchor-link" href="#Remove-unnecessary-columns">&#182;</a></h2>
+<h2 id="Separe-data-by-utilidad-is-defined">Separe data by utilidad is defined<a class="anchor-link" href="#Separe-data-by-utilidad-is-defined">&#182;</a></h2>
 </div>
 </div>
 </div>
@@ -14621,14 +13735,13 @@ div#notebook {
 <div class="prompt input_prompt">In&nbsp;[12]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">dfCleaned</span> <span class="o">=</span> <span class="n">dfCleaned</span><span class="o">.</span><span class="n">drop</span><span class="p">([</span>
-    <span class="s1">&#39;pedido.data.type&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;pedido.data.attributes.name&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;pedido.data.attributes.affected_organ&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;pedido.data.attributes.medical_history&#39;</span>
-<span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">dfDataSetComplete</span> <span class="o">=</span> <span class="n">dfKNN</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">notnull</span><span class="p">(</span><span class="n">dfKNN</span><span class="p">[</span><span class="s1">&#39;utilidad&#39;</span><span class="p">])]</span>
 
-<span class="n">dfCleaned</span> 
+<span class="nb">print</span><span class="p">(</span><span class="n">dfDataSetComplete</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+<span class="n">dfDataSetToPredict</span> <span class="o">=</span> <span class="n">dfKNN</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">isnull</span><span class="p">(</span><span class="n">dfKNN</span><span class="p">[</span><span class="s1">&#39;utilidad&#39;</span><span class="p">])]</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">dfDataSetToPredict</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
 </pre></div>
 
     </div>
@@ -14641,200 +13754,26 @@ div#notebook {
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[12]:</div>
+    <div class="prompt"></div>
 
 
-
-<div class="output_html rendered_html output_subarea output_execute_result">
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>id</th>
-      <th>pedido.data.attributes.age</th>
-      <th>pedido.data.attributes.diagnostic_main</th>
-      <th>pedido.data.attributes.gender</th>
-      <th>respuesta.articles</th>
-      <th>respuesta.articlesRevisedYear</th>
-      <th>respuesta.articlesRevisedMonth</th>
-      <th>respuesta.pubmed_keys</th>
-      <th>sugerencia_id_+_articles_id</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>29</td>
-      <td>75</td>
-      <td>FISTULA PERITONEAL</td>
-      <td>male</td>
-      <td>27395425</td>
-      <td>2018</td>
-      <td>01</td>
-      <td>Abdomen,Adenocarcinoma,Antiemetics,Blood Cultu...</td>
-      <td>29_27395425</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>29</td>
-      <td>75</td>
-      <td>FISTULA PERITONEAL</td>
-      <td>male</td>
-      <td>28560554</td>
-      <td>2018</td>
-      <td>04</td>
-      <td>Abdomen,Adenocarcinoma,Antiemetics,Blood Cultu...</td>
-      <td>29_28560554</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>29</td>
-      <td>75</td>
-      <td>FISTULA PERITONEAL</td>
-      <td>male</td>
-      <td>28641726</td>
-      <td>2017</td>
-      <td>12</td>
-      <td>Abdomen,Adenocarcinoma,Antiemetics,Blood Cultu...</td>
-      <td>29_28641726</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>29</td>
-      <td>75</td>
-      <td>FISTULA PERITONEAL</td>
-      <td>male</td>
-      <td>26245344</td>
-      <td>2016</td>
-      <td>12</td>
-      <td>Abdomen,Adenocarcinoma,Antiemetics,Blood Cultu...</td>
-      <td>29_26245344</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>29</td>
-      <td>75</td>
-      <td>FISTULA PERITONEAL</td>
-      <td>male</td>
-      <td>28942543</td>
-      <td>2018</td>
-      <td>06</td>
-      <td>Abdomen,Adenocarcinoma,Antiemetics,Blood Cultu...</td>
-      <td>29_28942543</td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-    </tr>
-    <tr>
-      <th>1235</th>
-      <td>152</td>
-      <td>37</td>
-      <td>DOLOR ABDOMINAL</td>
-      <td>male</td>
-      <td>29975804</td>
-      <td>2016</td>
-      <td>01</td>
-      <td>Abdomen,Abdominal Pain,Analgesics,Catharsis,Cy...</td>
-      <td>152_29975804</td>
-    </tr>
-    <tr>
-      <th>1236</th>
-      <td>152</td>
-      <td>37</td>
-      <td>DOLOR ABDOMINAL</td>
-      <td>male</td>
-      <td>26362243</td>
-      <td>2019</td>
-      <td>04</td>
-      <td>Abdomen,Abdominal Pain,Analgesics,Catharsis,Cy...</td>
-      <td>152_26362243</td>
-    </tr>
-    <tr>
-      <th>1237</th>
-      <td>152</td>
-      <td>37</td>
-      <td>DOLOR ABDOMINAL</td>
-      <td>male</td>
-      <td>30711130</td>
-      <td>2015</td>
-      <td>10</td>
-      <td>Abdomen,Abdominal Pain,Analgesics,Catharsis,Cy...</td>
-      <td>152_30711130</td>
-    </tr>
-    <tr>
-      <th>1238</th>
-      <td>152</td>
-      <td>37</td>
-      <td>DOLOR ABDOMINAL</td>
-      <td>male</td>
-      <td>27932159</td>
-      <td>2019</td>
-      <td>05</td>
-      <td>Abdomen,Abdominal Pain,Analgesics,Catharsis,Cy...</td>
-      <td>152_27932159</td>
-    </tr>
-    <tr>
-      <th>1239</th>
-      <td>152</td>
-      <td>37</td>
-      <td>DOLOR ABDOMINAL</td>
-      <td>male</td>
-      <td>19104113</td>
-      <td>2015</td>
-      <td>02</td>
-      <td>Abdomen,Abdominal Pain,Analgesics,Catharsis,Cy...</td>
-      <td>152_19104113</td>
-    </tr>
-  </tbody>
-</table>
-<p>1240 rows × 9 columns</p>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>51
+1182
+</pre>
 </div>
-</div>
-
 </div>
 
 </div>
 </div>
 
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Get-feedback">Get feedback<a class="anchor-link" href="#Get-feedback">&#182;</a></h2>
-</div>
-</div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 <div class="prompt input_prompt">In&nbsp;[13]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">dfFeedback</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_sql</span><span class="p">(</span><span class="s1">&#39;SELECT fed_hope_sugerencia_id as id, articulo, utilidad, concat(fed_hope_sugerencia_id, &quot;_&quot;, articulo) as &quot;sugerencia_id_+_articles_id&quot; FROM fed_hope_sugerencia_feedback&#39;</span><span class="p">,</span> <span class="n">con</span><span class="o">=</span><span class="n">dbConnection</span><span class="p">)</span>
-
-<span class="n">dfFeedback</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">dfDataSetComplete</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -14870,607 +13809,129 @@ div#notebook {
   <thead>
     <tr style="text-align: right;">
       <th></th>
-      <th>id</th>
-      <th>articulo</th>
-      <th>utilidad</th>
-      <th>sugerencia_id_+_articles_id</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>29</td>
-      <td>27395425</td>
-      <td>1</td>
-      <td>29_27395425</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>32</td>
-      <td>28694230</td>
-      <td>1</td>
-      <td>32_28694230</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>52</td>
-      <td>28805236</td>
-      <td>0</td>
-      <td>52_28805236</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>58</td>
-      <td>27537587</td>
-      <td>0</td>
-      <td>58_27537587</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>58</td>
-      <td>28148670</td>
-      <td>1</td>
-      <td>58_28148670</td>
-    </tr>
-    <tr>
-      <th>5</th>
-      <td>59</td>
-      <td>25055513</td>
-      <td>1</td>
-      <td>59_25055513</td>
-    </tr>
-    <tr>
-      <th>6</th>
-      <td>59</td>
-      <td>29279563</td>
-      <td>0</td>
-      <td>59_29279563</td>
-    </tr>
-    <tr>
-      <th>7</th>
-      <td>59</td>
-      <td>29279563</td>
-      <td>0</td>
-      <td>59_29279563</td>
-    </tr>
-    <tr>
-      <th>8</th>
-      <td>59</td>
-      <td>28065368</td>
-      <td>1</td>
-      <td>59_28065368</td>
-    </tr>
-    <tr>
-      <th>9</th>
-      <td>60</td>
-      <td>30762794</td>
-      <td>1</td>
-      <td>60_30762794</td>
-    </tr>
-    <tr>
-      <th>10</th>
-      <td>60</td>
-      <td>30762794</td>
-      <td>1</td>
-      <td>60_30762794</td>
-    </tr>
-    <tr>
-      <th>11</th>
-      <td>60</td>
-      <td>23424242</td>
-      <td>1</td>
-      <td>60_23424242</td>
-    </tr>
-    <tr>
-      <th>12</th>
-      <td>60</td>
-      <td>29587951</td>
-      <td>0</td>
-      <td>60_29587951</td>
-    </tr>
-    <tr>
-      <th>13</th>
-      <td>67</td>
-      <td>28720605</td>
-      <td>0</td>
-      <td>67_28720605</td>
-    </tr>
-    <tr>
-      <th>14</th>
-      <td>67</td>
-      <td>28956549</td>
-      <td>1</td>
-      <td>67_28956549</td>
-    </tr>
-    <tr>
-      <th>15</th>
-      <td>74</td>
-      <td>26362243</td>
-      <td>0</td>
-      <td>74_26362243</td>
-    </tr>
-    <tr>
-      <th>16</th>
-      <td>74</td>
-      <td>26362243</td>
-      <td>0</td>
-      <td>74_26362243</td>
-    </tr>
-    <tr>
-      <th>17</th>
-      <td>75</td>
-      <td>28552471</td>
-      <td>1</td>
-      <td>75_28552471</td>
-    </tr>
-    <tr>
-      <th>18</th>
-      <td>76</td>
-      <td>30711130</td>
-      <td>1</td>
-      <td>76_30711130</td>
-    </tr>
-    <tr>
-      <th>19</th>
-      <td>76</td>
-      <td>30662053</td>
-      <td>1</td>
-      <td>76_30662053</td>
-    </tr>
-    <tr>
-      <th>20</th>
-      <td>76</td>
-      <td>28294508</td>
-      <td>0</td>
-      <td>76_28294508</td>
-    </tr>
-    <tr>
-      <th>21</th>
-      <td>77</td>
-      <td>28429658</td>
-      <td>0</td>
-      <td>77_28429658</td>
-    </tr>
-    <tr>
-      <th>22</th>
-      <td>77</td>
-      <td>29600476</td>
-      <td>1</td>
-      <td>77_29600476</td>
-    </tr>
-    <tr>
-      <th>23</th>
-      <td>77</td>
-      <td>30910320</td>
-      <td>1</td>
-      <td>77_30910320</td>
-    </tr>
-    <tr>
-      <th>24</th>
-      <td>78</td>
-      <td>25989443</td>
-      <td>1</td>
-      <td>78_25989443</td>
-    </tr>
-    <tr>
-      <th>25</th>
-      <td>78</td>
-      <td>26429116</td>
-      <td>1</td>
-      <td>78_26429116</td>
-    </tr>
-    <tr>
-      <th>26</th>
-      <td>79</td>
-      <td>25904281</td>
-      <td>1</td>
-      <td>79_25904281</td>
-    </tr>
-    <tr>
-      <th>27</th>
-      <td>79</td>
-      <td>24526429</td>
-      <td>1</td>
-      <td>79_24526429</td>
-    </tr>
-    <tr>
-      <th>28</th>
-      <td>79</td>
-      <td>28188621</td>
-      <td>0</td>
-      <td>79_28188621</td>
-    </tr>
-    <tr>
-      <th>29</th>
-      <td>83</td>
-      <td>21055785</td>
-      <td>0</td>
-      <td>83_21055785</td>
-    </tr>
-    <tr>
-      <th>30</th>
-      <td>84</td>
-      <td>30182627</td>
-      <td>1</td>
-      <td>84_30182627</td>
-    </tr>
-    <tr>
-      <th>31</th>
-      <td>84</td>
-      <td>29196305</td>
-      <td>1</td>
-      <td>84_29196305</td>
-    </tr>
-    <tr>
-      <th>32</th>
-      <td>85</td>
-      <td>23850836</td>
-      <td>1</td>
-      <td>85_23850836</td>
-    </tr>
-    <tr>
-      <th>33</th>
-      <td>87</td>
-      <td>28956549</td>
-      <td>1</td>
-      <td>87_28956549</td>
-    </tr>
-    <tr>
-      <th>34</th>
-      <td>87</td>
-      <td>25070613</td>
-      <td>1</td>
-      <td>87_25070613</td>
-    </tr>
-    <tr>
-      <th>35</th>
-      <td>89</td>
-      <td>27480349</td>
-      <td>1</td>
-      <td>89_27480349</td>
-    </tr>
-    <tr>
-      <th>36</th>
-      <td>89</td>
-      <td>29937071</td>
-      <td>1</td>
-      <td>89_29937071</td>
-    </tr>
-    <tr>
-      <th>37</th>
-      <td>89</td>
-      <td>28270645</td>
-      <td>0</td>
-      <td>89_28270645</td>
-    </tr>
-    <tr>
-      <th>38</th>
-      <td>90</td>
-      <td>30413186</td>
-      <td>0</td>
-      <td>90_30413186</td>
-    </tr>
-    <tr>
-      <th>39</th>
-      <td>90</td>
-      <td>21598204</td>
-      <td>1</td>
-      <td>90_21598204</td>
-    </tr>
-    <tr>
-      <th>40</th>
-      <td>94</td>
-      <td>29975804</td>
-      <td>0</td>
-      <td>94_29975804</td>
-    </tr>
-    <tr>
-      <th>41</th>
-      <td>94</td>
-      <td>23761322</td>
-      <td>0</td>
-      <td>94_23761322</td>
-    </tr>
-    <tr>
-      <th>42</th>
-      <td>94</td>
-      <td>30413186</td>
-      <td>0</td>
-      <td>94_30413186</td>
-    </tr>
-    <tr>
-      <th>43</th>
-      <td>95</td>
-      <td>30567250</td>
-      <td>0</td>
-      <td>95_30567250</td>
-    </tr>
-    <tr>
-      <th>44</th>
-      <td>99</td>
-      <td>28803258</td>
-      <td>0</td>
-      <td>99_28803258</td>
-    </tr>
-    <tr>
-      <th>45</th>
-      <td>102</td>
-      <td>23587563</td>
-      <td>1</td>
-      <td>102_23587563</td>
-    </tr>
-    <tr>
-      <th>46</th>
-      <td>102</td>
-      <td>28516316</td>
-      <td>0</td>
-      <td>102_28516316</td>
-    </tr>
-    <tr>
-      <th>47</th>
-      <td>103</td>
-      <td>24079694</td>
-      <td>0</td>
-      <td>103_24079694</td>
-    </tr>
-    <tr>
-      <th>48</th>
-      <td>124</td>
-      <td>31515299</td>
-      <td>1</td>
-      <td>124_31515299</td>
-    </tr>
-    <tr>
-      <th>49</th>
-      <td>125</td>
-      <td>31515299</td>
-      <td>1</td>
-      <td>125_31515299</td>
-    </tr>
-    <tr>
-      <th>50</th>
-      <td>129</td>
-      <td>28251285</td>
-      <td>1</td>
-      <td>129_28251285</td>
-    </tr>
-  </tbody>
-</table>
-</div>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[14]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">dfJoined</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">dfCleaned</span><span class="p">,</span> <span class="n">dfFeedback</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;left&#39;</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;sugerencia_id_+_articles_id&#39;</span><span class="p">])</span>
-
-<span class="n">dfJoined</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt output_prompt">Out[14]:</div>
-
-
-
-<div class="output_html rendered_html output_subarea output_execute_result">
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>id_x</th>
       <th>pedido.data.attributes.age</th>
       <th>pedido.data.attributes.diagnostic_main</th>
       <th>pedido.data.attributes.gender</th>
-      <th>respuesta.articles</th>
+      <th>articulo</th>
       <th>respuesta.articlesRevisedYear</th>
       <th>respuesta.articlesRevisedMonth</th>
       <th>respuesta.pubmed_keys</th>
-      <th>sugerencia_id_+_articles_id</th>
-      <th>id_y</th>
-      <th>articulo</th>
       <th>utilidad</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <th>0</th>
-      <td>29</td>
-      <td>75</td>
-      <td>FISTULA PERITONEAL</td>
-      <td>male</td>
+      <td>75.0</td>
+      <td>0</td>
+      <td>0</td>
       <td>27395425</td>
       <td>2018</td>
-      <td>01</td>
-      <td>Abdomen,Adenocarcinoma,Antiemetics,Blood Cultu...</td>
-      <td>29_27395425</td>
-      <td>29.0</td>
-      <td>27395425</td>
+      <td>1</td>
+      <td>0</td>
       <td>1.0</td>
     </tr>
     <tr>
-      <th>1</th>
-      <td>29</td>
-      <td>75</td>
-      <td>FISTULA PERITONEAL</td>
-      <td>male</td>
-      <td>28560554</td>
-      <td>2018</td>
-      <td>04</td>
-      <td>Abdomen,Adenocarcinoma,Antiemetics,Blood Cultu...</td>
-      <td>29_28560554</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>29</td>
-      <td>75</td>
-      <td>FISTULA PERITONEAL</td>
-      <td>male</td>
-      <td>28641726</td>
+      <th>32</th>
+      <td>75.0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>28694230</td>
       <td>2017</td>
       <td>12</td>
-      <td>Abdomen,Adenocarcinoma,Antiemetics,Blood Cultu...</td>
-      <td>29_28641726</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
+      <td>3</td>
+      <td>1.0</td>
     </tr>
     <tr>
-      <th>3</th>
-      <td>29</td>
-      <td>75</td>
-      <td>FISTULA PERITONEAL</td>
-      <td>male</td>
-      <td>26245344</td>
-      <td>2016</td>
-      <td>12</td>
-      <td>Abdomen,Adenocarcinoma,Antiemetics,Blood Cultu...</td>
-      <td>29_26245344</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
+      <th>230</th>
+      <td>36.0</td>
+      <td>6</td>
+      <td>0</td>
+      <td>28805236</td>
+      <td>2011</td>
+      <td>3</td>
+      <td>21</td>
+      <td>0.0</td>
     </tr>
     <tr>
-      <th>4</th>
-      <td>29</td>
-      <td>75</td>
-      <td>FISTULA PERITONEAL</td>
-      <td>male</td>
-      <td>28942543</td>
-      <td>2018</td>
-      <td>06</td>
-      <td>Abdomen,Adenocarcinoma,Antiemetics,Blood Cultu...</td>
-      <td>29_28942543</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-    </tr>
-    <tr>
-      <th>1238</th>
-      <td>152</td>
-      <td>37</td>
-      <td>DOLOR ABDOMINAL</td>
-      <td>male</td>
-      <td>29975804</td>
-      <td>2016</td>
-      <td>01</td>
-      <td>Abdomen,Abdominal Pain,Analgesics,Catharsis,Cy...</td>
-      <td>152_29975804</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>1239</th>
-      <td>152</td>
-      <td>37</td>
-      <td>DOLOR ABDOMINAL</td>
-      <td>male</td>
-      <td>26362243</td>
-      <td>2019</td>
-      <td>04</td>
-      <td>Abdomen,Abdominal Pain,Analgesics,Catharsis,Cy...</td>
-      <td>152_26362243</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>1240</th>
-      <td>152</td>
-      <td>37</td>
-      <td>DOLOR ABDOMINAL</td>
-      <td>male</td>
-      <td>30711130</td>
-      <td>2015</td>
+      <th>290</th>
+      <td>51.0</td>
       <td>10</td>
-      <td>Abdomen,Abdominal Pain,Analgesics,Catharsis,Cy...</td>
-      <td>152_30711130</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
+      <td>0</td>
+      <td>27537587</td>
+      <td>2011</td>
+      <td>3</td>
+      <td>23</td>
+      <td>0.0</td>
     </tr>
     <tr>
-      <th>1241</th>
-      <td>152</td>
-      <td>37</td>
-      <td>DOLOR ABDOMINAL</td>
-      <td>male</td>
-      <td>27932159</td>
+      <th>299</th>
+      <td>51.0</td>
+      <td>10</td>
+      <td>0</td>
+      <td>28148670</td>
       <td>2019</td>
-      <td>05</td>
-      <td>Abdomen,Abdominal Pain,Analgesics,Catharsis,Cy...</td>
-      <td>152_27932159</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
+      <td>3</td>
+      <td>23</td>
+      <td>1.0</td>
     </tr>
     <tr>
-      <th>1242</th>
-      <td>152</td>
-      <td>37</td>
-      <td>DOLOR ABDOMINAL</td>
-      <td>male</td>
-      <td>19104113</td>
-      <td>2015</td>
-      <td>02</td>
-      <td>Abdomen,Abdominal Pain,Analgesics,Catharsis,Cy...</td>
-      <td>152_19104113</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
+      <th>300</th>
+      <td>18.0</td>
+      <td>11</td>
+      <td>0</td>
+      <td>25055513</td>
+      <td>2019</td>
+      <td>3</td>
+      <td>24</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>303</th>
+      <td>18.0</td>
+      <td>11</td>
+      <td>0</td>
+      <td>29279563</td>
+      <td>2017</td>
+      <td>2</td>
+      <td>24</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>304</th>
+      <td>18.0</td>
+      <td>11</td>
+      <td>0</td>
+      <td>29279563</td>
+      <td>2017</td>
+      <td>2</td>
+      <td>24</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>305</th>
+      <td>18.0</td>
+      <td>11</td>
+      <td>0</td>
+      <td>28065368</td>
+      <td>2017</td>
+      <td>11</td>
+      <td>24</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>311</th>
+      <td>76.0</td>
+      <td>12</td>
+      <td>0</td>
+      <td>30762794</td>
+      <td>2019</td>
+      <td>3</td>
+      <td>25</td>
+      <td>1.0</td>
     </tr>
   </tbody>
 </table>
-<p>1243 rows × 12 columns</p>
 </div>
 </div>
 
@@ -15483,28 +13944,194 @@ div#notebook {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Remove-nans-and-unnecessary-columns">Remove nans and unnecessary columns<a class="anchor-link" href="#Remove-nans-and-unnecessary-columns">&#182;</a></h2>
+<h2 id="k-NN">k-NN<a class="anchor-link" href="#k-NN">&#182;</a></h2>
 </div>
 </div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[14]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.neighbors</span> <span class="kn">import</span> <span class="n">KNeighborsClassifier</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+<span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">MinMaxScaler</span>
+<span class="kn">from</span> <span class="nn">matplotlib.colors</span> <span class="kn">import</span> <span class="n">ListedColormap</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 <div class="prompt input_prompt">In&nbsp;[15]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#dfJoined = dfJoined.dropna()</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Discard &#39;articulo&#39; because it is a identifier</span>
 
-<span class="n">dfJoined</span> <span class="o">=</span> <span class="n">dfJoined</span><span class="o">.</span><span class="n">drop</span><span class="p">([</span>
-    <span class="s1">&#39;id_x&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;id_y&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;articulo&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;sugerencia_id_+_articles_id&#39;</span>
-<span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">dfDataSetComplete</span><span class="p">[[</span><span class="s1">&#39;pedido.data.attributes.age&#39;</span><span class="p">,</span> 
+       <span class="s1">&#39;pedido.data.attributes.diagnostic_main&#39;</span><span class="p">,</span>
+       <span class="s1">&#39;pedido.data.attributes.gender&#39;</span><span class="p">,</span> 
+       <span class="s1">&#39;respuesta.articlesRevisedYear&#39;</span><span class="p">,</span> 
+       <span class="s1">&#39;respuesta.articlesRevisedMonth&#39;</span><span class="p">,</span>
+       <span class="s1">&#39;respuesta.pubmed_keys&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">values</span>
 
-<span class="c1"># Rename column respuesta.articles to preserve back compatibility</span>
-<span class="n">dfJoined</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;respuesta.articles&#39;</span><span class="p">:</span><span class="s1">&#39;articulo&#39;</span><span class="p">},</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">dfDataSetComplete</span><span class="p">[</span><span class="s1">&#39;utilidad&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="n">dfJoined</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[16]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">scaler</span> <span class="o">=</span> <span class="n">MinMaxScaler</span><span class="p">()</span>
+<span class="n">X_train</span> <span class="o">=</span> <span class="n">scaler</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>
+<span class="n">X_test</span> <span class="o">=</span> <span class="n">scaler</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[17]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">k_range</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>
+<span class="n">accuracy</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">k_range</span><span class="p">:</span>
+    <span class="n">knn</span> <span class="o">=</span> <span class="n">KNeighborsClassifier</span><span class="p">(</span><span class="n">n_neighbors</span> <span class="o">=</span> <span class="n">k</span><span class="p">)</span>
+    <span class="n">y_pred</span> <span class="o">=</span> <span class="n">knn</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+    <span class="n">accuracy</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">knn</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">))</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;k&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;accuracy&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">k_range</span><span class="p">,</span> <span class="n">accuracy</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">15</span><span class="p">,</span><span class="mi">20</span><span class="p">])</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[17]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>([&lt;matplotlib.axis.XTick at 0x7f0f46f4bd10&gt;,
+  &lt;matplotlib.axis.XTick at 0x7f0f46f4b510&gt;,
+  &lt;matplotlib.axis.XTick at 0x7f0f4782c090&gt;,
+  &lt;matplotlib.axis.XTick at 0x7f0f44ec1ed0&gt;,
+  &lt;matplotlib.axis.XTick at 0x7f0f44ed1590&gt;],
+ &lt;a list of 5 Text xticklabel objects&gt;)</pre>
+</div>
+
+</div>
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+
+
+<div class="output_png output_subarea ">
+<img src="data:image/png;base64,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
+"
+>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[18]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">accuracy</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[18]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>[0.6923076923076923,
+ 0.7692307692307693,
+ 0.6923076923076923,
+ 0.6923076923076923,
+ 0.7692307692307693,
+ 0.6153846153846154,
+ 0.6153846153846154,
+ 0.7692307692307693,
+ 0.7692307692307693,
+ 0.5384615384615384,
+ 0.6153846153846154,
+ 0.6153846153846154,
+ 0.5384615384615384,
+ 0.6153846153846154,
+ 0.6923076923076923,
+ 0.7692307692307693,
+ 0.5384615384615384,
+ 0.6153846153846154,
+ 0.5384615384615384]</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[19]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">n_neighbors</span> <span class="o">=</span> <span class="mi">2</span>
+
+<span class="n">knn</span> <span class="o">=</span> <span class="n">KNeighborsClassifier</span><span class="p">(</span><span class="n">n_neighbors</span><span class="p">)</span>
+<span class="n">knn</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Accuracy of K-NN classifier on training set: </span><span class="si">{:.2f}</span><span class="s1">&#39;</span>
+     <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">knn</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Accuracy of K-NN classifier on test set: </span><span class="si">{:.2f}</span><span class="s1">&#39;</span>
+     <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">knn</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)))</span>
 </pre></div>
 
     </div>
@@ -15521,7 +14148,8 @@ div#notebook {
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>1243
+<pre>Accuracy of K-NN classifier on training set: 0.74
+Accuracy of K-NN classifier on test set: 0.77
 </pre>
 </div>
 </div>
@@ -15530,12 +14158,56 @@ div#notebook {
 </div>
 
 </div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Print-the-K-NN-classification-only-with-the-attributes-&quot;diagnostic_main&quot;-and-&quot;pubmed_keys&quot;">Print the K-NN classification only with the attributes "diagnostic_main" and "pubmed_keys"<a class="anchor-link" href="#Print-the-K-NN-classification-only-with-the-attributes-&quot;diagnostic_main&quot;-and-&quot;pubmed_keys&quot;">&#182;</a></h2>
+</div>
+</div>
+</div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[16]:</div>
+<div class="prompt input_prompt">In&nbsp;[20]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">dfJoined</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># see: https://scikit-learn.org/stable/auto_examples/neighbors/plot_classification.html</span>
+
+<span class="n">X_plot</span> <span class="o">=</span> <span class="n">dfDataSetComplete</span><span class="p">[[</span><span class="s1">&#39;pedido.data.attributes.diagnostic_main&#39;</span><span class="p">,</span>
+       <span class="s1">&#39;respuesta.pubmed_keys&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">values</span>
+<span class="n">y_plot</span> <span class="o">=</span> <span class="n">dfDataSetComplete</span><span class="p">[</span><span class="s1">&#39;utilidad&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+
+<span class="n">h</span> <span class="o">=</span> <span class="o">.</span><span class="mi">02</span>  <span class="c1"># step size in the mesh</span>
+
+<span class="c1"># Create color maps</span>
+<span class="n">cmap_light</span> <span class="o">=</span> <span class="n">ListedColormap</span><span class="p">([</span><span class="s1">&#39;orange&#39;</span><span class="p">,</span> <span class="s1">&#39;blue&#39;</span><span class="p">])</span>
+<span class="n">cmap_bold</span> <span class="o">=</span> <span class="n">ListedColormap</span><span class="p">([</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="s1">&#39;cyan&#39;</span><span class="p">])</span>
+
+<span class="c1"># we create an instance of Neighbours Classifier and fit the data.</span>
+<span class="n">clf</span> <span class="o">=</span> <span class="n">KNeighborsClassifier</span><span class="p">(</span><span class="n">n_neighbors</span><span class="p">)</span>
+<span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_plot</span><span class="p">,</span> <span class="n">y_plot</span><span class="p">)</span>
+
+<span class="c1"># Plot the decision boundary. For that, we will assign a color to each</span>
+<span class="c1"># point in the mesh [x_min, x_max]x[y_min, y_max].</span>
+<span class="n">x_min</span><span class="p">,</span> <span class="n">x_max</span> <span class="o">=</span> <span class="n">X_plot</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">X_plot</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">+</span> <span class="mi">1</span>
+<span class="n">y_min</span><span class="p">,</span> <span class="n">y_max</span> <span class="o">=</span> <span class="n">X_plot</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">X_plot</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">+</span> <span class="mi">1</span>
+<span class="n">xx</span><span class="p">,</span> <span class="n">yy</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">x_min</span><span class="p">,</span> <span class="n">x_max</span><span class="p">,</span> <span class="n">h</span><span class="p">),</span>
+                     <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">y_min</span><span class="p">,</span> <span class="n">y_max</span><span class="p">,</span> <span class="n">h</span><span class="p">))</span>
+<span class="n">Z</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">c_</span><span class="p">[</span><span class="n">xx</span><span class="o">.</span><span class="n">ravel</span><span class="p">(),</span> <span class="n">yy</span><span class="o">.</span><span class="n">ravel</span><span class="p">()])</span>
+
+<span class="c1"># Put the result into a color plot</span>
+<span class="n">Z</span> <span class="o">=</span> <span class="n">Z</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">xx</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">50</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">pcolormesh</span><span class="p">(</span><span class="n">xx</span><span class="p">,</span> <span class="n">yy</span><span class="p">,</span> <span class="n">Z</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">cmap_light</span><span class="p">)</span>
+
+<span class="c1"># Plot also the training points</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X_plot</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">X_plot</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="n">y_plot</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">cmap_bold</span><span class="p">,</span>
+            <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="n">xx</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">xx</span><span class="o">.</span><span class="n">max</span><span class="p">())</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="n">yy</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">yy</span><span class="o">.</span><span class="n">max</span><span class="p">())</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;2-Class classification (k = 2)&quot;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 
     </div>
@@ -15548,153 +14220,28 @@ div#notebook {
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[16]:</div>
+    <div class="prompt"></div>
 
 
 
-<div class="output_html rendered_html output_subarea output_execute_result">
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
 
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>pedido.data.attributes.age</th>
-      <th>pedido.data.attributes.diagnostic_main</th>
-      <th>pedido.data.attributes.gender</th>
-      <th>articulo</th>
-      <th>respuesta.articlesRevisedYear</th>
-      <th>respuesta.articlesRevisedMonth</th>
-      <th>respuesta.pubmed_keys</th>
-      <th>utilidad</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>75</td>
-      <td>FISTULA PERITONEAL</td>
-      <td>male</td>
-      <td>27395425</td>
-      <td>2018</td>
-      <td>01</td>
-      <td>Abdomen,Adenocarcinoma,Antiemetics,Blood Cultu...</td>
-      <td>1.0</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>75</td>
-      <td>FISTULA PERITONEAL</td>
-      <td>male</td>
-      <td>28560554</td>
-      <td>2018</td>
-      <td>04</td>
-      <td>Abdomen,Adenocarcinoma,Antiemetics,Blood Cultu...</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>75</td>
-      <td>FISTULA PERITONEAL</td>
-      <td>male</td>
-      <td>28641726</td>
-      <td>2017</td>
-      <td>12</td>
-      <td>Abdomen,Adenocarcinoma,Antiemetics,Blood Cultu...</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>75</td>
-      <td>FISTULA PERITONEAL</td>
-      <td>male</td>
-      <td>26245344</td>
-      <td>2016</td>
-      <td>12</td>
-      <td>Abdomen,Adenocarcinoma,Antiemetics,Blood Cultu...</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>75</td>
-      <td>FISTULA PERITONEAL</td>
-      <td>male</td>
-      <td>28942543</td>
-      <td>2018</td>
-      <td>06</td>
-      <td>Abdomen,Adenocarcinoma,Antiemetics,Blood Cultu...</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>5</th>
-      <td>75</td>
-      <td>FISTULA PERITONEAL</td>
-      <td>male</td>
-      <td>24782153</td>
-      <td>2014</td>
-      <td>06</td>
-      <td>Abdomen,Adenocarcinoma,Antiemetics,Blood Cultu...</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>6</th>
-      <td>75</td>
-      <td>FISTULA PERITONEAL</td>
-      <td>male</td>
-      <td>28002229</td>
-      <td>2018</td>
-      <td>09</td>
-      <td>Abdomen,Adenocarcinoma,Antiemetics,Blood Cultu...</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>7</th>
-      <td>75</td>
-      <td>FISTULA PERITONEAL</td>
-      <td>male</td>
-      <td>27505109</td>
-      <td>2017</td>
-      <td>04</td>
-      <td>Abdomen,Adenocarcinoma,Antiemetics,Blood Cultu...</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>8</th>
-      <td>75</td>
-      <td>FISTULA PERITONEAL</td>
-      <td>male</td>
-      <td>24850546</td>
-      <td>2015</td>
-      <td>01</td>
-      <td>Abdomen,Adenocarcinoma,Antiemetics,Blood Cultu...</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>9</th>
-      <td>75</td>
-      <td>FISTULA PERITONEAL</td>
-      <td>male</td>
-      <td>29371050</td>
-      <td>2019</td>
-      <td>04</td>
-      <td>Abdomen,Adenocarcinoma,Antiemetics,Blood Cultu...</td>
-      <td>NaN</td>
-    </tr>
-  </tbody>
-</table>
+<div class="output_text output_subarea ">
+<pre>&lt;Figure size 720x3600 with 0 Axes&gt;</pre>
 </div>
+
+</div>
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+
+
+<div class="output_png output_subarea ">
+<img src="data:image/png;base64,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
+"
+>
 </div>
 
 </div>
@@ -15706,19 +14253,59 @@ div#notebook {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Save-data-to-csv">Save data to csv<a class="anchor-link" href="#Save-data-to-csv">&#182;</a></h2>
+<h2 id="Run-Prediction">Run Prediction<a class="anchor-link" href="#Run-Prediction">&#182;</a></h2>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[17]:</div>
+<div class="prompt input_prompt">In&nbsp;[21]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">dfJoined</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s1">&#39;hope_dataset_cleaned.csv&#39;</span><span class="p">,</span><span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">runPrediction</span><span class="p">(</span><span class="n">row</span><span class="p">):</span>
+    <span class="n">valuesrow</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">row</span><span class="o">.</span><span class="n">get</span><span class="p">([</span><span class="s1">&#39;pedido.data.attributes.age&#39;</span><span class="p">,</span> 
+       <span class="s1">&#39;pedido.data.attributes.diagnostic_main&#39;</span><span class="p">,</span>
+       <span class="s1">&#39;pedido.data.attributes.gender&#39;</span><span class="p">,</span> 
+       <span class="s1">&#39;respuesta.articlesRevisedYear&#39;</span><span class="p">,</span> 
+       <span class="s1">&#39;respuesta.articlesRevisedMonth&#39;</span><span class="p">,</span>
+       <span class="s1">&#39;respuesta.pubmed_keys&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">values</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">knn</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">valuesrow</span><span class="p">)</span>
+
+<span class="n">dfDataSetToPredict</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">runPrediction</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 </pre></div>
 
     </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[21]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>1       [0.0]
+2       [0.0]
+3       [0.0]
+4       [0.0]
+5       [0.0]
+        ...  
+1238    [1.0]
+1239    [1.0]
+1240    [1.0]
+1241    [1.0]
+1242    [1.0]
+Length: 1182, dtype: object</pre>
+</div>
+
+</div>
+
 </div>
 </div>
 
