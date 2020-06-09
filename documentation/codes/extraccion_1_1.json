@@ -1,0 +1,13 @@
+{
+  "data": {
+    "type": "emr--em",
+    "attributes": {
+      "name": null,
+      "affected_organ": "",
+      "age": "75",
+      "diagnostic_main": "FISTULA PERITONEAL",
+      "gender": "male",
+      "medical_history": "Paciente de 75 au00f1os con antecedentes de gastrectomu00eda total por adenocarcinoma gu00e1strico que intercurriu00f3 con eventraciu00f3n y posterior formaciu00f3n de fu00edstula entero-atmosfu00e9rica. Actualmente cursa postoperatorio de resecciu00f3n intestinal mu00e1s eventroplastu00eda con colocaciu00f3n de malla. Al examen impresiona en regular estado general, lu00facido, hemodinu00e1micamente estable, sin signos de falla de bomba. Regular entrada de aire, rales crepitantes bilaterales. Abdomen blando, depresible, levemente doloroso a la palpaciu00f3n profunda. Herida cubierta por apu00f3sitos estu00e9riles. Catarsis positiva. Diuresis positiva.\n\nPROBLEMAS ACTIVOS:\n- POP resecciu00f3n intestinal mu00e1s eventroplastu00eda: Paciente clu00ednicamente estable, hemodinu00e1micamente compensado. Refiere buena tolerancia al dolor. Afebril hace 72 hs. Cumple 4to du00eda de tratamiento con piperacilina tazobactam por neumonu00eda broncoaspirativa con aislamiento de E.coli BLEE. Hemocultivos vienen negativos. TAC de tu00f3rax y abdomen informa: Consolidaciu00f3n bibasal bilateral mu00e1s derrame pleural bilateral. Colecciu00f3n laminar posterior a ambos mu00fasculos rectos de 10x2x0.4 cm, y otra colecciu00f3n en herida quiru00fargica de pared de 10x2.8x1.2 cm. Se da aviso a cirujano tratante. Persiste con estado nauseoso, por lo que continua con antiemu00e9ticos reglados. \nEn aislamiento de contacto por germen multirrestente. \nSe da informe. Control evolutivo."
+    }
+  }
+}
