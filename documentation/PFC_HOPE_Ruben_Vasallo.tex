@@ -92,7 +92,32 @@
 
 \tableofcontents
 
-\chapter{Presentación del Máster}
+\iffalse
+Notas: (imagen en formato svg), hacer referencia a las imagenes en el texto. si hay mucho codigo, ponerlo en el anexo
+nombrar objetios op1 = dar referencias en infinitivo (crear, recoger)
+os1 = hacer pca
+os2 = hacer modelo predictivo x
+
+mendele
+\fi
+
+\chapter{Principal}
+
+\section{Resumen}
+
+\paragraph{}
+El proyecto nace de la necesidad de poder disponer de una manera sencilla e inmediata, artículos médicos catalogados según los síntomas de pacientes, pudiendo hacer un \textit{ranking} de más o menos interés en función del \textit{feedback} aportado por los profesiones médicos de artículos relacionados anteriormente.
+
+\section{Astract}
+TODO
+
+\section{Keywords}
+
+\paragraph{}
+clasificador articulos medicos, PCA, KNN, Regresion Logistica
+
+\newpage
+\chapter{Introducción}
 
 \section{Definición del proyecto}
 
@@ -111,31 +136,39 @@ El proyecto HOPE es un sistema basado en inteligencia artificial para identifica
 \paragraph{}
 En este ámbito, los profesionales médicos pueden valorar si la información recibida ha sido útil o no respecto a la búsqueda que han realizado, por lo que con ese \textit{feedback}, se pretende mejorar el sistema actual complementándolo con un modelo clasificador capaz de ayudar al actual a entregar realmente los artículos útiles basándose en el \textit{feedback} que los médicos dan al sistema.
 
+
+\section{Estado del arte}
+Recomendaciones que existen en el mundo actual
+
+
 \chapter{Objetivos del Máster}
 
 \section{Objetivo principal}
 
-\paragraph{}
-El objetivo principal que se pretende alcanzar en este proyecto es el de entrenar un modelo predictivo de tipo clasificador que sea capaz de discriminar en base a los términos buscados por el medico, cuales son los artículos más útiles que pueden ayudar en el tratamiento del paciente.
-
-\paragraph{}
-Este modelo predictivo tendrá que ser capaz de clasificar si un documento/articulo que esta relacionado un unas \textit{Keywords} y unos términos (dolencias) buscados por un usuario sera útil o no para este usuario. Esto permitirá a los médicos poder consultar de una manera inmediata la información de otras pruebas relacionadas con las dolencias del paciente y así poder decidir aplicar o no las mismas pruebas. Ademas también permitirá que pacientes que aparentemente no tenían un tratamiento disponible para la dolencia que tiene y que están en cuidados paliativos, puedan probar posibles tratamientos relacionados con las dolencias que tienen, y que si han funcionado en otros pacientes.
-
-\paragraph{}
-Con todo esto, el entregable final sera el código necesario para crear y ejecutar el modelo predictivo que mejor acierto tenga con el dataset facilitado para poder realizar el entrenamiento y pruebas de la validación del modelo.
+\label{op:OP1}
+\paragraph{OP} - Poder mostrar al usuario cuales son los artículos más útiles que pueden ayudar en el tratamiento del paciente, en base a los sintomas que este tiene, pudiendo realizar un \textit{ranking} de mas interés a menos.
 
 \section{Objetivos secundarios}
 
 \paragraph{}
-Debido a que la creación de un modelo predictivo funcional es un primer paso fundamental para solucionar el problema, el propio modelo en si no servirá de nada si no existe una manera útil y sencilla de poder usarlo.
+Para poder cumplir con el objetivo principal \hyperref[op:OP1]{OP1}, desglosaremos los siguientes objetivos secundarios:
 
-\paragraph{}
-Por eso, si se consigue entrenar un modelo lo suficientemente útil para que de resultados correctos, se plantea como objetivo secundario el crear una interfaz (api REST) que facilite el uso de este modelo.
+\label{os:OS1}
+\paragraph{OS1} - Extraer la información de la base de datos y tratarla para quedarnos solo con la que consideramos valida.
 
-\paragraph{}
-Esta api deberá recoger por parámetro los atributos necesarios para que el modelo se pueda ejecutar y devuelva la respuesta de si el articulo es valido o no
+\paragraph{OS2} - Hacer un análisis de componentes principales (estudio de que atributos son relevantes para alcanzar el objetivo).
+
+\paragraph{OS3} - Enriquecer de los datos (\textit{data augmentation}) prediciendo los resultados que no están indicados si son relevantes o no. Aproximación por Vecinos más próximos (\textit{K-Nearest-Neighbor}).
+
+\paragraph{OS4} - Predecir los resultados usando el algoritmo de aprendizaje supervisado para clasificación llamado Regresión logística "\textit{Logistic regression}".
+
+\paragraph{OS5} - Predecir los resultados usando el algoritmo de aprendizaje supervisado para clasificación llamado Bosques Aleatorios "\textit{Random Forests}".
+
+\paragraph{OS6} - Predecir los resultados usando el algoritmo de aprendizaje supervisado para clasificación llamado Máquinas de vector soporte "\textit{Support Vector Machines}".
 
 \chapter{Metodología}
+
+Para cumplir con el \hyperref[op:OP1]{OP1} mostramos los pasos que hemos seguido para extraer y procesar los datos:
 
 \section{Extracción de los datos}
 
@@ -190,7 +223,7 @@ En esta tabla encontraremos la opinión \textit{feedback} (que utilidad ha tenid
 En esta tabla esta representada la opinión \textit{feedback} del usuario en el atributo \textit{utilidad}, que denota un valor 0 para los artículos que han sido poco útiles respecto a la búsqueda realizada y 1 para los artículos que si han sido útiles.
 
 \newpage
-\subsection{Lectura de los datos de MySQL}
+\subsection{Lectura de los datos}
 
 \paragraph{}
 El primer paso sera extraer de la base de datos \textit{MySQL} el dataset de datos. Para realizar esta acción nos ayudaremos de las librerías \textit{sqlalchemy} y \textit{pymysql} programadas en lenguaje \textit{python} que nos permitirá acceder a la información almacenada en una base de datos \textit{MySQL} y devolvérnosla en formato \textit{dataframe}, un formato que nos permite entre otras cosas, realizar transformaciones de los datos para conseguir nuestro objetivo final.
@@ -258,22 +291,40 @@ Después de analizar el documento, y ayudarnos del conocimiento del cliente, vem
 \section{Procesado de los datos}
 TODO
 
-\section{Análisis de los datos}
+\subsection{Análisis de los datos}
+TODO
 
 \subsection{Análisis de componentes principales}
 TODO
 
+\newpage
 \section{Enriquecimiento de los datos. Aproximación por Vecinos más próximos (K-NN)}
 TODO
 
+\newpage
 \section{Modelos Predictivos}
 
-\subsection{Regresión logística}
+\subsection{Regresión logística \textit{'Logistic regression'}}
+TODO
+
+\subsection{Bosques Aleatorios \textit{'Random Forest'}}
+TODO
+
+\subsection{Maquinas de Vector Soporte \textit{'Support Vector Machines'}}
 TODO
 
 \chapter{Conclusiones}
 
 \section{Resultados obtenidos}
 TODO
+
+\chapter{Bibliográfica}
+
+\cleardoublepage
+\phantomsection
+\addcontentsline{toc}{chapter}{\listfigurename}
+\listoffigures
+
+\chapter{Anexos}
 
 \end{document}
