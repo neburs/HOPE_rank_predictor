@@ -94,19 +94,22 @@
 
 \iffalse
 Notas: (imagen en formato svg), hacer referencia a las imagenes en el texto. si hay mucho codigo, ponerlo en el anexo
-nombrar objetios op1 = dar referencias en infinitivo (crear, recoger)
-os1 = hacer pca
-os2 = hacer modelo predictivo x
 
 mendele
+
+cambiar usuario por profesional sanitario o paciente segun sea el caso, en los objetivos y cambiar mostrar por recomendar.
+
+poner que se hicieron X reuniones para acordar los problemas que existen y como mejorar el analisis (en la extracion de los datos)
+enlazar las imagenes con el texto
 \fi
 
-\chapter{Principal}
+\newpage
+\chapter{}
 
 \section{Resumen}
 
 \paragraph{}
-El proyecto nace de la necesidad de poder disponer de una manera sencilla e inmediata, artículos médicos catalogados según los síntomas de pacientes, pudiendo hacer un \textit{ranking} de más o menos interés en función del \textit{feedback} aportado por los profesiones médicos de artículos relacionados anteriormente.
+El proyecto nace de la necesidad de poder disponer de una manera sencilla e inmediata, artículos médicos catalogados según los síntomas de pacientes, pudiendo hacer un \textit{ranking} de más o menos interés en función del \textit{feedback} aportado por los profesionales sanitarios sobre artículos relacionados con esos \textit{síntomas}.
 
 \section{Astract}
 TODO
@@ -114,31 +117,32 @@ TODO
 \section{Keywords}
 
 \paragraph{}
-clasificador articulos medicos, PCA, KNN, Regresion Logistica
+clasificador articulos medicos, PCA, KNN, Regresion Logistica, Random Forest, SVM
 
 \newpage
 \chapter{Introducción}
 
 \section{Definición del proyecto}
+\label{def:def1}
 
 \paragraph{}
-El proyecto de fin de máster que aquí se presenta nace de la necesidad por parte del \textit{proyecto HOPE} de clasificar y recomendar resultados sobre estudios clínicos de confianza y que estén actualizados. En Internet existe muchísima información sobre medicina y salud y no siempre toda es de fiar.
+El proyecto que aquí se presenta nace de la necesidad por parte del \textit{proyecto HOPE} de clasificar y recomendar resultados sobre estudios clínicos de confianza y que estén actualizados. En Internet existe muchísima información sobre medicina y salud y no siempre toda es de fiar.
 
 \paragraph{}
-El proyecto HOPE (que significa \textit{Health Operations for Personalized Evidence} en ingles) nace de la necesidad de ayudar a los científicos médicos a encontrar la información que necesitan de la manera más rápida y fácil posible. Existe infinidad de información medica en Internet de miles de proyectos de investigación medica y esto hace que, muchas veces sea complicado encontrar la información sobre ensayos médicos para tratar información. En el ámbito de la medicina el tiempo perdido puede costar vidas y es un precio demasiado elevado a pagar, tanto a nivel económico como emocional.
+El proyecto HOPE (que significa \textit{Health Operations for Personalized Evidence} en ingles) nace de la necesidad de ayudar a los profesionales sanitarios a encontrar la información que necesitan de la manera más rápida y fácil posible. Existe infinidad de información medica en Internet de miles de proyectos de investigación medica y esto hace que, muchas veces sea complicado encontrar la información sobre ensayos médicos para tratar información. En el ámbito de la medicina el tiempo perdido puede costar vidas y es un precio demasiado elevado a pagar, tanto a nivel económico como emocional.
 
 \paragraph{}
-Actualmente existen bases de datos de confianza en donde los científicos y el publico en general puede buscar informes y ensayos sobre estudios clínicos desarrollados anteriormente, pero no siempre es fácil o rápido encontrar estos resultados.
+Actualmente existen bases de datos de confianza en donde los profesionales sanitarios y el publico en general puede buscar informes y ensayos sobre estudios clínicos desarrollados anteriormente, pero no siempre es fácil o rápido encontrar estos resultados.
 
 \paragraph{}
-El proyecto HOPE es un sistema basado en inteligencia artificial para identificar los datos claves de casos clínicos registrados en la Historia Clínica Electrónica, en base a los cuales realiza una búsqueda única por paciente para proporcionar al profesional de la salud recomendaciones de tratamientos, estudios de investigación, información para el paciente, todo en base a registros de fuentes científicas de información. En este proyecto, médicos de todo el mundo puede consultar en una base de datos informes médicos relacionados con los síntomas que puedan tener sus pacientes y ver que otros tratamientos han dado resultado. Todo y con eso, el sistema no siempre devuelve los artículos más relevantes o actualizados por lo que, no siempre la información consultada es útil.
+El proyecto HOPE es un sistema basado en inteligencia artificial para identificar los datos claves de casos clínicos registrados en la Historia Clínica Electrónica, en base a los cuales realiza una búsqueda única por paciente para proporcionar al profesional sanitario recomendaciones de tratamientos, estudios de investigación, información para el paciente, todo en base a registros de fuentes científicas de información. En este proyecto, profesionales sanitarios de todo el mundo puede consultar en una base de datos informes médicos relacionados con los síntomas que puedan tener sus pacientes y ver que otros tratamientos han dado resultado. Todo y con eso, el sistema no siempre devuelve los artículos más relevantes o actualizados por lo que, no siempre la información consultada es útil.
 
 \paragraph{}
-En este ámbito, los profesionales médicos pueden valorar si la información recibida ha sido útil o no respecto a la búsqueda que han realizado, por lo que con ese \textit{feedback}, se pretende mejorar el sistema actual complementándolo con un modelo clasificador capaz de ayudar al actual a entregar realmente los artículos útiles basándose en el \textit{feedback} que los médicos dan al sistema.
+En este ámbito, los profesionales sanitarios pueden valorar si la información recibida ha sido útil o no respecto a la búsqueda que han realizado, por lo que con ese \textit{feedback}, se pretende mejorar el sistema actual complementándolo con un modelo clasificador capaz de ayudar al actual a entregar realmente los artículos útiles basándose en el \textit{feedback} que los profesionales sanitarios dan al sistema.
 
 
 \section{Estado del arte}
-Recomendaciones que existen en el mundo actual
+Recomendadores que existen actualmente:
 
 
 \chapter{Objetivos del Máster}
@@ -146,7 +150,7 @@ Recomendaciones que existen en el mundo actual
 \section{Objetivo principal}
 
 \label{op:OP1}
-\paragraph{OP} - Poder mostrar al usuario cuales son los artículos más útiles que pueden ayudar en el tratamiento del paciente, en base a los sintomas que este tiene, pudiendo realizar un \textit{ranking} de mas interés a menos.
+\paragraph{OP} - Poder recomendar al profesional sanitario cuales son los artículos más útiles que pueden ayudar en el tratamiento del paciente, en base a los síntomas que este tiene, pudiendo realizar un \textit{ranking} de mas interés a menos.
 
 \section{Objetivos secundarios}
 
@@ -168,59 +172,85 @@ Para poder cumplir con el objetivo principal \hyperref[op:OP1]{OP1}, desglosarem
 
 \chapter{Metodología}
 
-Para cumplir con el \hyperref[op:OP1]{OP1} mostramos los pasos que hemos seguido para extraer y procesar los datos:
+\section{Reuniones con el cliente}
+
+\paragraph{}
+Para poder comprender y abordar con éxito el \hyperref[op:OP1]{objetivo principal} se realizaron 4 reuniones en donde el cliente expuso el \hyperref[op:OP1]{problema} a abordar y el origen de los datos para poder realizar el estudio.
+
+\paragraph{}
+En estas reuniones se pudo observar que los datos facilitados por el usuario requerían de una limpieza y tratamiento para poder cumplir el objetivo principal, ya que muchas observaciones tenían información poco relevante que podía generar ruido.
+
+\paragraph{}
+Realizando un primer análisis visual, se detecto que los datos aportados por el cliente eran insuficientes para completar el \hyperref[op:OP1]{OP1}, ya que solo se disponía de la información respecto de si un articulo había sido útil o no, pero no se disponía de la información suficientemente detallada para saber si había sido muy útil o poco útil para poder llegar a realizar un \textit{ranking}. El cliente nos comenta que en el momento actual no dispone de ese nivel de detalle y se acuerda con el que, se realizara una aproximación para indicar si un articulo es útil o no dejando para mas adelante la opción de poder realizar \textit{rankins} si se consigue ese nivel de detalle por parte del cliente.
+
+\paragraph{}
+También se pudo comprobar que el cliente disponía de un volumen de observaciones bajo por lo que se planteo la posibilidad de, o intentar obtener más observaciones facilitadas por el cliente, o intentar enriquecer las observaciones actuales generando nuevos datos por aproximación a los reales.
+
+\paragraph{}
+Finalmente se decidió estudiar si era viable generar nuevos valores por aproximación, debido a que en el momento en que se trato el problema, el cliente no podía facilitar más datos. Si a lo largo del estudio, el cliente conseguía facilitar nuevas observaciones, estas serian añadidas al estudio para aproximar mejor la solución final.
 
 \section{Extracción de los datos}
 
 \paragraph{}
+Para cumplir con el \hyperref[op:OP1]{OP1} mostramos los pasos que hemos seguido para extraer y procesar los datos:
+
+\paragraph{}
 El Origen de los datos se encuentra en una Base de datos SQL distribuida en dos tablas, que pasamos a detallar a continuación:
 
-\paragraph{• Tabla \textit{fed\_hope\_sugerencia}}
+\paragraph{}
+En la primera tabla llamada \textit{fed\_hope\_sugerencia}, encontraremos la sugerencia que dio el programa HOPE en base a los parámetros que introdujo el profesional sanitario, almacenado en el atributo pedido y la respuesta que dio el programa, almacenado en el atributo respuesta. Todos los datos son almacenados en formato documento json.
+
+\paragraph{}
+En la figura \ref{tablaFedHopeSugerencia} mostramos los atributos de la tabla \textit{fed\_hope\_sugerencia}.
 
 \paragraph{}
 \begin{figure}[!htb]
   \centering
-  \includegraphics[width=8cm]{images/metodologia_tabla_fed_hope_sugerencia.png}
-  \caption{Visualización de los atributos de la tabla \textit{fed\_hope\_sugerencia}}
+    \includegraphics[width=8cm]{images/metodologia_tabla_fed_hope_sugerencia.png}
+    \caption{Visualización de los atributos de la tabla \textit{fed\_hope\_sugerencia}}
+  \label{tablaFedHopeSugerencia}
 \end{figure}
 
 \paragraph{}
-En esta tabla encontraremos la sugerencia que dio el programa HOPE en base a los parámetros que introdujo el usuario, almacenado en el atributo pedido y la respuesta que dio el programa, almacenado en el atributo respuesta. Todos los datos son almacenados en formato documento json.
+Si analizamos el \textbf{atributo pedido}, podemos observar, tal y como se muestra en la figura \ref{atributoPedido}, varios atributos haciendo referencia a los síntomas que consulta el profesional sanitario.
+
+\begin{figure}[!htb]
+  \centering
+    \lstset{inputencoding=utf8/latin1}
+    \lstinputlisting[frame=single]{codes/metodologia_tabla_fed_hope_sugerencia_attribute_pedido.json}
+    \caption{Muestra de una observación del atributo pedido}
+  \label{atributoPedido}
+\end{figure}
+
+\paragraph{}
+Si analizamos el \textbf{atributo respuesta}, podemos observar entre otros datos, el listado de artículos médicos sugeridos relacionados con los síntomas descritos por el profesional sanitario. Esta respuesta es muy amplia pero entre todos los atributos, podemos observar un listado de identificadores de artículos, con sus fechas de revisión de estos, y unas palabras claves descriptivas para esos artículos.
+
+\paragraph{}
+A continuación mostramos en la figura \ref{atributoRespuesta} una pequeña parte del contenido de una observación del atributo respuesta.
+\begin{figure}[!htb]
+  \centering
+    \includegraphics[width=15cm]{images/metodologia_tabla_fed_hope_sugerencia_attribute_respuesta.png}
+    \caption{Ejemplo de contenido del atributo respuesta de una observación}
+  \label{atributoRespuesta}
+\end{figure}
 
 \newpage
-\paragraph{\textbf{Atributo pedido}: } Si analizamos el formato de datos que tenemos del atributo pedido observamos los siguientes atributos:
-
-\lstset{inputencoding=utf8/latin1}
-\lstinputlisting[frame=single]{codes/metodologia_tabla_fed_hope_sugerencia_attribute_pedido.json}
+\paragraph{}
+En la segunda tabla llamada \textit{fed\_hope\_sugerencia\_feedback}, encontraremos, tal y como se muestra en la figura \ref{tablaFedHopeSugerenciaFeedback}, la opinión \textit{feedback} (que utilidad ha tenido la información por parte del profesional sanitario) de la información recibida dado un articulo en concreto en una búsqueda en concreto. Esta información se relaciona con la tabla \textit{fed\_hope\_sugerencia} a través del atributo \textit{fed\_hope\_sugerencia\_id}.
 
 \paragraph{}
-Podemos ver varios atributos haciendo referencia a los síntomas que consulta el profesional medico.
-
-\paragraph{\textbf{Atributo respuesta}: } En el atributo respuesta obtenemos entre otros datos, el listado de artículos científicos sugeridos relacionados con los síntomas descritos por el profesional medico. Esta respuesta es muy amplia pero entre todos los atributos, podemos observar un listado de identificadores de artículos, con sus fechas de revisión de estos, y unas palabras claves descriptivas para esos artículos.
-
-\paragraph{}
-\textbf{Nota:} Mostramos una pequeña parte del contenido de una observación del atributo respuesta.
-\begin{figure}[!htb]
-  \centering
-  \includegraphics[width=15cm]{images/metodologia_tabla_fed_hope_sugerencia_attribute_respuesta.png}
-  \caption{Ejemplo de contenido del atributo respuesta de una observación}
-\end{figure}
-
-\newpage
-\paragraph{• Tabla \textit{fed\_hope\_sugerencia\_feedback}}
+En esta tabla, esta representada la opinión \textit{feedback} del profesional sanitario en el atributo \textit{utilidad}, que denota un valor 0 para los artículos que han sido poco útiles respecto a la búsqueda realizada y 1 para los artículos que si han sido útiles.
 
 \paragraph{}
 \begin{figure}[!htb]
   \centering
-  \includegraphics[width=8cm]{images/metodologia_tabla_fed_hope_sugerencia_feedback.png}
-  \caption{Visualización de los atributos de la tabla \textit{fed\_hope\_sugerencia\_feedback}}
+    \includegraphics[width=8cm]{images/metodologia_tabla_fed_hope_sugerencia_feedback.png}
+    \caption{Visualización de los atributos de la tabla \textit{fed\_hope\_sugerencia\_feedback}}
+  \label{tablaFedHopeSugerenciaFeedback}
 \end{figure}
 
 \paragraph{}
-En esta tabla encontraremos la opinión \textit{feedback} (que utilidad ha tenido la información por parte del usuario) de la información recibida dado un articulo en concreto en una búsqueda en concreto. Esta información se relaciona con la tabla \textit{fed\_hope\_sugerencia} a través del atributo \textit{fed\_hope\_sugerencia\_id}.
 
-\paragraph{}
-En esta tabla esta representada la opinión \textit{feedback} del usuario en el atributo \textit{utilidad}, que denota un valor 0 para los artículos que han sido poco útiles respecto a la búsqueda realizada y 1 para los artículos que si han sido útiles.
 
 \newpage
 \subsection{Lectura de los datos}
@@ -248,7 +278,7 @@ Para poder trabajar con los datos, necesitaremos que estos estén en formato col
 Este paso consiste en coger cada uno de los atributos que tiene el json y convertirlos en columnas de una tabla, añadiendo los valores. Si el \textit{json} tiene varios niveles, este proceso añadirá tantas columnas como niveles tenga el \textit{json}, siempre que todas las observaciones del \textit{json} tengan el mismo formato. Este caso se nos cumple para las observaciones del atributo Pedido. No es así para las observaciones del atributo respuesta en el que tendremos que hacer un tratamiento especial que detallaremos posteriormente.
 
 \paragraph{}
-Para poder realizar esta acción, primero tendremos que solucionar un problema de tratamiento de texto. Los datos que se nos proporcionan, contienen caracteres que informan de un salto de linea o tabulador. Estos caracteres pueden ser mal interpretados a la hora de leer los datos de los documentos en formato \textit{json} por lo que los eliminaremos de los datos (substituyendo-los por espacios vacíos).
+Para poder realizar esta acción, primero tendremos que solucionar un problema de tratamiento de texto. Los datos que se nos proporcionan, contienen caracteres que informan de los saltos de linea o tabulacion. Estos caracteres pueden ser mal interpretados a la hora de leer los datos de los documentos en formato \textit{json} por lo que los eliminaremos de los datos (substituyendo-los por espacios vacíos).
 
 \paragraph{}
 \begin{figure}[!htb]
@@ -313,9 +343,12 @@ TODO
 \subsection{Maquinas de Vector Soporte \textit{'Support Vector Machines'}}
 TODO
 
-\chapter{Conclusiones}
+\newpage
+\section{Resultados}
+TODO
 
-\section{Resultados obtenidos}
+\newpage
+\chapter{Conclusiones}
 TODO
 
 \chapter{Bibliográfica}
