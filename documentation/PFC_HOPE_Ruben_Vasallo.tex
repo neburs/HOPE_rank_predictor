@@ -160,14 +160,19 @@ Para poder cumplir con el objetivo principal \hyperref[op:OP1]{OP1}, desglosarem
 \label{os:OS1}
 \paragraph{OS1} - Extraer la información de la base de datos y tratarla para quedarnos solo con la que consideramos valida.
 
+\label{os:OS2}
 \paragraph{OS2} - Hacer un análisis de componentes principales (estudio de que atributos son relevantes para alcanzar el objetivo).
 
+\label{os:OS3}
 \paragraph{OS3} - Enriquecer de los datos (\textit{data augmentation}) prediciendo los resultados que no están indicados si son relevantes o no. Aproximación por Vecinos más próximos (\textit{K-Nearest-Neighbor}).
 
+\label{os:OS4}
 \paragraph{OS4} - Predecir los resultados usando el algoritmo de aprendizaje supervisado para clasificación llamado Regresión logística "\textit{Logistic regression}".
 
+\label{os:OS5}
 \paragraph{OS5} - Predecir los resultados usando el algoritmo de aprendizaje supervisado para clasificación llamado Bosques Aleatorios "\textit{Random Forests}".
 
+\label{os:OS6}
 \paragraph{OS6} - Predecir los resultados usando el algoritmo de aprendizaje supervisado para clasificación llamado Máquinas de vector soporte "\textit{Support Vector Machines}".
 
 \chapter{Metodología}
@@ -256,17 +261,21 @@ En esta tabla, esta representada la opinión \textit{feedback} del profesional s
 \subsection{Lectura de los datos}
 
 \paragraph{}
-El primer paso sera extraer de la base de datos \textit{MySQL} el dataset de datos. Para realizar esta acción nos ayudaremos de las librerías \textit{sqlalchemy} y \textit{pymysql} programadas en lenguaje \textit{python} que nos permitirá acceder a la información almacenada en una base de datos \textit{MySQL} y devolvérnosla en formato \textit{dataframe}, un formato que nos permite entre otras cosas, realizar transformaciones de los datos para conseguir nuestro objetivo final.
+Para extraer los datos de la base de datos nos ayudaremos de las librerías \textit{sqlalchemy} y \textit{pymysql} programadas en lenguaje \textit{python} que nos permitirá acceder a la información almacenada en una base de datos \textit{MySQL} y devolvérnosla en formato \textit{dataframe}, un formato que nos permite entre otras cosas, realizar transformaciones de los datos para conseguir nuestro objetivo final.
 
 \paragraph{}
-Este formato es interpretable por la librería \textit{pandas} y \textit{numpy}, dos librerías programadas en lenguaje \textit{python}, muy comunes en el ámbito de la ciencia del dato, que nos facilitara entre otras cosas, poder hacer operaciones matemáticas con los datos de manera eficiente.
+Este formato es interpretable por la librería \textit{pandas} y \textit{numpy}, dos librerías programadas en lenguaje \textit{python}, muy comunes en el ámbito de la ciencia del dato, que nos facilitara entre otras cosas, poder hacer operaciones matemáticas con los datos de manera eficiente. A continuación mostramos en la figura \ref{readDataBD} el código utilizado para extraer los datos de la tabla \textit{fed\_hope\_sugerencia}.
 
 \paragraph{}
 \begin{figure}[!htb]
   \centering
-  \includegraphics[width=0.9\textwidth]{images/metodologia-extract-data-mysql.png}
-  \caption{Lectura de los datos de Mysql}
+    \includegraphics[width=0.9\textwidth]{images/metodologia-extract-data-mysql.png}
+    \caption{Lectura de los datos}
+  \label{readDataBD}
 \end{figure}
+
+\paragraph{}
+Aplicaremos los mismos pasos para leer la información del feedback de los profesionales sanitarios de la tabla \textit{fed\_hope\_sugerencia\_feedback}
 
 \newpage
 \subsection{Conversión a formato columnar}
@@ -278,26 +287,19 @@ Para poder trabajar con los datos, necesitaremos que estos estén en formato col
 Este paso consiste en coger cada uno de los atributos que tiene el json y convertirlos en columnas de una tabla, añadiendo los valores. Si el \textit{json} tiene varios niveles, este proceso añadirá tantas columnas como niveles tenga el \textit{json}, siempre que todas las observaciones del \textit{json} tengan el mismo formato. Este caso se nos cumple para las observaciones del atributo Pedido. No es así para las observaciones del atributo respuesta en el que tendremos que hacer un tratamiento especial que detallaremos posteriormente.
 
 \paragraph{}
-Para poder realizar esta acción, primero tendremos que solucionar un problema de tratamiento de texto. Los datos que se nos proporcionan, contienen caracteres que informan de los saltos de linea o tabulacion. Estos caracteres pueden ser mal interpretados a la hora de leer los datos de los documentos en formato \textit{json} por lo que los eliminaremos de los datos (substituyendo-los por espacios vacíos).
+Cuando se analizan los datos recuperados, se detecta que estos, contienen caracteres que informan de los saltos de linea o tabulacion. Estos caracteres pueden ser mal interpretados a la hora de leer los datos de los documentos en formato \textit{json} por lo que sera necesario eliminarlos.
 
-\paragraph{}
-\begin{figure}[!htb]
-  \centering
-  \includegraphics[width=0.9\textwidth]{images/metodologia-eliminar-caracteres-prohibidos.png}
-  \caption{Eliminación de caracteres erróneos.}
-\end{figure}
-
-\newpage
 \paragraph{• \textit{Flattening} del atributo pedido}
 
 \paragraph{}
-Para realizar la acción de \textit{flattening} en el atributo pedido, nos ayudaremos de la funcionalidad \textit{json\_normalize} del paquete pandas que realiza esta acción. 
+Para realizar la acción de \textit{flattening} en el atributo pedido, nos ayudaremos de la funcionalidad \textit{json\_normalize} del paquete pandas que realiza esta acción. A continuación mostramos en la figura \ref{flatteningPedido} el código utilizado para el atributo pedido.
 
 \paragraph{}
 \begin{figure}[!htb]
   \centering
-  \includegraphics[width=0.9\textwidth]{images/metodologia-aplanar-pedido.png}
-  \caption{\textit{Flattening} del atributo pedido.}
+    \includegraphics[width=0.9\textwidth]{images/metodologia-aplanar-pedido.png}
+    \caption{\textit{Flattening} del atributo pedido.}
+  \label{flatteningPedido}
 \end{figure}
 
 \paragraph{• \textit{Flattening} del atributo respuesta}
@@ -306,24 +308,54 @@ Para realizar la acción de \textit{flattening} en el atributo pedido, nos ayuda
 Debido a que la información almacenada en el documento \textit{json}, en el atributo respuesta es muy compleja (debido a que esta contiene diferentes documentos con diferentes niveles de información) como se puede apreciar en el apartado X, no podemos aplanar la información directamente como hemos hecho con el atributo pedido. Por lo que tenemos que analizar que información nos interesa recoger para enriquecer el dataset de datos.
 
 \paragraph{}
-Después de analizar el documento, y ayudarnos del conocimiento del cliente, vemos que los atributos más interesantes son los que hacen referencia al identificador del articulo, las palabras claves asociadas al articulo por parte de la api pubmed y el mes y año de la revisión del articulo.
+Después de analizar el documento, y ayudarnos del conocimiento del cliente, vemos que los atributos más interesantes son los que hacen referencia al identificador del articulo, las palabras claves asociadas al articulo por parte de la api pubmed y el mes y año de la revisión del articulo. Para recoger esta información nos crearemos una función que acceda directamente a estos atributos dado una observación. Después ejecutaremos esa función para cada observación ayudándonos de la función \textit{apply}. A continuación mostramos este proceso en la figura \ref{flatteningRespuesta}.
 
 \paragraph{}
 \begin{figure}[!htb]
   \centering
-  \includegraphics[width=0.9\textwidth]{images/metodologia-aplanar-respuesta.png}
-  \caption{\textit{Flattening} del atributo respuesta.}
+    \includegraphics[width=0.9\textwidth]{images/metodologia-aplanar-respuesta.png}
+    \caption{\textit{Flattening} del atributo respuesta.}
+  \label{flatteningRespuesta}
 \end{figure}
 
-
+\paragraph{}
+Una vez aplanado los dos atributos, los uniremos en un único dataset junto a los datos originales de la tabla \textit{fed\_hope\_sugerencia} para poder trabajar con ellos. Estos es importante para mantener el id de cada observación, de cara a poder luego identificar el feedback de los profesionales sanitarios con cada observación.
 
 \newpage
 \section{Procesado de los datos}
-TODO
 
 \subsection{Análisis de los datos}
-TODO
+Una vez tenemos los datos en formato tabular, observamos que existen ciertos atributos que contienen listas de opciones como son los atributos \textit{pubmed\_keys} (que corresponde a las palabras clave que la api de pubmed nos devuelve para esta observación), \textit{articles} (que corresponde a los ids de los artículos relacionados con esa observación), \textit{articlesRevisedYear} i \textit{articlesRevisedMonth} (que corresponde a los años y meses de los artículos según están ordenados en el atributo \textit{articles})
 
+\paragraph{}
+Como nuestro \hyperref[op:OP1]{OP1} es poder recomendar artículos útiles, necesitamos tener una observación por articulo, para poder posteriormente analizar de manera independiente si ese articulo fue útil o no para la observación a la que hace referencia.
+
+\paragraph{}
+Por lo que necesitaremos expandir (duplicar) cada observación con solo un articulo que haga referencia a el. A continuación mostramos en la figura \ref{expandArticles} el código para expandir el atributo \textit{articles} (el resto de atributos su proceso seria similar).
+
+\paragraph{}
+\begin{figure}[!htb]
+  \centering
+    \includegraphics[width=0.9\textwidth]{images/metodologia_procesado_de_datos_expandir_articulos.png}
+    \caption{Expansión del atributo \textit{articles}.}
+  \label{expandArticles}
+\end{figure}
+
+\paragraph{}
+Después de tener un articulo por observación, observamos que tenemos atributos poco relevantes (como el atributo \textit{data.type} o \textit{Name} que contiene siempre el mismo valor) o que no contienen información alguna (como el atributo \textit{affected\_organ}) como se puede observar en la figura \ref{atributesEmpty}. Eliminaremos estos atributos junto a otros con la misma casuistica, para no generar ruido en el posterior análisis predictivo.
+
+\paragraph{}
+\begin{figure}[!htb]
+  \centering
+    \includegraphics[width=0.9\textwidth]{images/metodologia_analisis_datos_atributos_sin_valor.png}
+    \caption{Se detectan algunos atributos con poca o nula relevancia.}
+  \label{atributesEmpty}
+\end{figure}
+
+\paragraph{}
+Y con estos pasos hemos cubierto el \hyperref[os:OS1]{OS1}
+
+\newpage
 \subsection{Análisis de componentes principales}
 TODO
 
