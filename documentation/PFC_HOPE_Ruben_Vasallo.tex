@@ -167,13 +167,13 @@ Para poder cumplir con el objetivo principal \hyperref[op:OP1]{OP1}, desglosarem
 \paragraph{OS3} - Enriquecer de los datos (\textit{data augmentation}) prediciendo los resultados que no están indicados si son relevantes o no. Aproximación por Vecinos más próximos (\textit{K-Nearest-Neighbor}).
 
 \label{os:OS4}
-\paragraph{OS4} - Predecir los resultados usando el algoritmo de aprendizaje supervisado para clasificación llamado Regresión logística "\textit{Logistic regression}".
+\paragraph{OS4} - Predecir los resultados usando el algoritmo de aprendizaje supervisado para clasificación llamado Regresión logística '\textit{Logistic regression}'.
 
 \label{os:OS5}
-\paragraph{OS5} - Predecir los resultados usando el algoritmo de aprendizaje supervisado para clasificación llamado Bosques Aleatorios "\textit{Random Forests}".
+\paragraph{OS5} - Predecir los resultados usando el algoritmo de aprendizaje supervisado para clasificación llamado Bosques Aleatorios '\textit{Random Forests}'.
 
 \label{os:OS6}
-\paragraph{OS6} - Predecir los resultados usando el algoritmo de aprendizaje supervisado para clasificación llamado Máquinas de vector soporte "\textit{Support Vector Machines}".
+\paragraph{OS6} - Predecir los resultados usando el algoritmo de aprendizaje supervisado para clasificación llamado Máquinas de vector soporte '\textit{Support Vector Machines}'.
 
 \chapter{Metodología}
 
@@ -305,7 +305,7 @@ Para realizar la acción de \textit{flattening} en el atributo pedido, nos ayuda
 \paragraph{• \textit{Flattening} del atributo respuesta}
 
 \paragraph{}
-Debido a que la información almacenada en el documento \textit{json}, en el atributo respuesta es muy compleja (debido a que esta contiene diferentes documentos con diferentes niveles de información) como se puede apreciar en el apartado X, no podemos aplanar la información directamente como hemos hecho con el atributo pedido. Por lo que tenemos que analizar que información nos interesa recoger para enriquecer el dataset de datos.
+Debido a que la información almacenada en el documento \textit{json}, en el atributo respuesta es muy compleja (debido a que esta contiene diferentes documentos con diferentes niveles de información) como se puede apreciar en el apartado X, no podemos aplanar la información directamente como hemos hecho con el atributo pedido. Por lo que tenemos que analizar que información nos interesa recoger para enriquecer el conjunto de datos.
 
 \paragraph{}
 Después de analizar el documento, y ayudarnos del conocimiento del cliente, vemos que los atributos más interesantes son los que hacen referencia al identificador del articulo, las palabras claves asociadas al articulo por parte de la api pubmed y el mes y año de la revisión del articulo. Para recoger esta información nos crearemos una función que acceda directamente a estos atributos dado una observación. Después ejecutaremos esa función para cada observación ayudándonos de la función \textit{apply}. A continuación mostramos este proceso en la figura \ref{flatteningRespuesta}.
@@ -319,7 +319,7 @@ Después de analizar el documento, y ayudarnos del conocimiento del cliente, vem
 \end{figure}
 
 \paragraph{}
-Una vez aplanado los dos atributos, los uniremos en un único dataset junto a los datos originales de la tabla \textit{fed\_hope\_sugerencia} para poder trabajar con ellos. Estos es importante para mantener el id de cada observación, de cara a poder luego identificar el feedback de los profesionales sanitarios con cada observación.
+Una vez aplanado los dos atributos, los uniremos en un único conjunto de datos, junto a los datos originales de la tabla \textit{fed\_hope\_sugerencia} para poder trabajar con ellos. Estos es importante para mantener el id de cada observación, de cara a poder luego identificar el feedback de los profesionales sanitarios con cada observación.
 
 \newpage
 \section{Procesado de los datos}
@@ -357,7 +357,134 @@ Y con estos pasos hemos cubierto el \hyperref[os:OS1]{OS1}
 
 \newpage
 \subsection{Análisis de componentes principales}
-TODO
+
+\paragraph{}
+El análisis de componentes principales (o como se le conoce en ingles por '\textit{Principal Component Analysis}' o \textit{PCA}), es un componente fundamental en el análisis de los datos, ya que permite reducir el número de atributos de un conjunto de datos para eliminar el ruido que los posteriores análisis/modelos predictivos funcionen con mejor precision.
+
+\paragraph{}
+Por poner un ejemplo sencillo, imaginemos que tenemos un conjunto de datos de modelos de coche con muchísimos atributos de estos, como por ejemplo, el nombre del modelo, el color, el número de puertas, la cilindrada y la potencia, entre otros. Probablemente si intentáramos analizar los datos en busca de cual es el modelos que menos consume y quisiéramos crear un modelo predictivo con este objetivo, podríamos observar a simple vista que tenemos atributos que no nos son necesarios y que generaría distracción (ruido) a la hora de conseguir nuestro objetivo, como es el caso del atributo color, o el nombre del modelo.
+
+\paragraph{}
+El \textit{PCA} nos ayudara a encontrar cuales son los atributos más significativos del conjunto de datos para conseguir predecir el atributo que queremos, que en el caso que nos toca, es el atributo '\textit{utilidad}'.
+
+\paragraph{}
+Es cierto que, en nuestro conjunto de datos, no tenemos un gran volumen de atributos, pero este proceso nos puede ayudar a eliminar atributos con poca relevancia, para así, poder simplificar el modelo predictivo final.
+
+\paragraph{}
+Para realizar el \textit{PCA} nos ayudaremos de la librería \textit{sklearn.decomposition} que ya nos ofrece implementada la lógica para ejecutarlo. Pero antes, tenemos que transformar todos los atributos de Categóricos (texto) a Continuos (números continuos). Este paso se realiza para que el \textit{PCA} pueda realizar operaciones matemáticas sobre los valores de las observaciones. A este proceso se le conoce como factorización (\textit{factorize}). Realizar esta transformación es tan sencillo como coger cada uno de los valores del atributo y asignarles un número. A continuación mostramos en la figura \ref{factorize1} un ejemplo de transformación de atributo categórico a continuo.
+
+\paragraph{}
+\begin{figure}[!htb]
+  \centering
+    \includegraphics[width=0.9\textwidth]{images/metodologia_procesado_de_datos_factorize.png}
+    \caption{Factorización de un atributo.}
+  \label{factorize1}
+\end{figure}
+
+\paragraph{}
+Una vez realizada la factorización de todos los atributos necesarios, el siguiente paso, antes de ejecutar el PCA, sera estandarizar todos los valores de las observaciones a un rango de entre 1 y -1. Esto se realiza para igualar la importancia de todos los atributos, ya que en el paso anterior, al factorizar los valores de los atributos, se nos puede dar el caso de tener valores muy altos (por ejemplo, al factorizar un atributo con 100 valores diferentes, se nos dará casos de observaciones que en un atributo tienen el valor 100, que puede ser más alto que otros valores que no se han transformado). Al realizar el PCA, si no se hace esta estandarización de los datos, los valores más altos se les dará más peso, pero no por eso pueden ser relevantes. Por lo que es imperativo el realizar esta estandarización.
+
+\paragraph{}
+Para realizar esta estandarización nos ayudaremos de la librería \textit{sklearn.preprocessing} que ya tiene implementado el modelo de estandarización llamado \textit{StandardScaler}. A continuación mostramos en la figura \ref{standarize1} un ejemplo de estandarización del conjunto de datos excluyendo de este el atributo a predecir (utilidad)
+
+\paragraph{}
+\begin{figure}[!htb]
+  \centering
+    \includegraphics[width=0.7\textwidth]{images/metodologia_procesado_de_datos_standarize.png}
+    \caption{Estandarización del conjunto de datos.}
+  \label{standarize1}
+\end{figure}
+
+\paragraph{}
+Una vez realizado estos pasos podemos ejecutar el \textit{PCA}. Con el conjunto de datos completo, y tal y como podemos ver en la figura \ref{pcaOneResult} , el \textit{PCA} nos muestra que con solo 3 atributos, el modelo es capaz de explicar (predecir) el 95\% de las observaciones.
+
+\paragraph{}
+\begin{figure}[!htb]
+  \centering
+    \includegraphics[width=0.9\textwidth]{images/metodologia_procesado_de_datos_pca1_result.png}
+    \caption{Resultado del \textit{PCA}.}
+  \label{pcaOneResult}
+\end{figure}
+
+\newpage
+\paragraph{}
+Si extrapolamos los resultados de las observaciones a un gráfico que mostramos en la figura \ref{pcaOneGraphic} dibujando los 3 componentes principales como si fueran 3 dimensiones, y pintamos los valores a predecir sobre estos (aplicando el color rojo a las observaciones que no consideran útiles, y azul a los que si se consideran útiles), podemos observar que la gran mayoría de los rojo se encuentran en el plano del componente principal 1 y dos, mientras que el azul esta mas repartidos en los dos planos.
+
+\paragraph{}
+\begin{figure}[!htb]
+  \centering
+    \includegraphics[width=0.3\textwidth]{images/metodologia_procesado_de_datos_pca1_graphic.png}
+    \caption{Proyección delos resultados del \textit{PCA} en una gráfica.}
+  \label{pcaOneGraphic}
+\end{figure}
+
+\paragraph{}
+Una vez ejecutado el modelo, podemos pedirle a este que nos indique cuales son los 3 componentes que ha detectado que son los principales. Para hacer esto le pediremos al modelo que nos muestre los resultados de los 3 componentes sobre los atributos del conjunto de datos. Estos resultados se pueden ver en la figura \ref{pcaOneAtributos}. Para saber cuales son los componentes, tendremos que quedarnos para cada componente principal, el valor del atributo que más se acerque a 1.
+
+\paragraph{}
+\begin{figure}[!htb]
+  \centering
+    \includegraphics[width=0.9\textwidth]{images/metodologia_procesado_de_datos_pca1_atributos.png}
+    \caption{Proyección de los resultados del \textit{PCA} sobre los atributos del conjunto de datos.}
+  \label{pcaOneAtributos}
+\end{figure}
+
+\paragraph{}
+Para este caso, el \textit{PCA} nos muestra que los 3 componentes principales son, el atributo \textit{pubmed\_keys}, el atributo \textit{age} y el atributo \textit{diagnostic\_main}.
+
+\paragraph{}
+Después de comentar los resultados con el cliente, acordamos hacer dos pruebas más:
+
+\newpage
+\subsubsection{• Ejecutar el \textit{PCA} solo teniendo en cuenta las observaciones que tienen informado el atributo utilidad, y añadiendo el mes y año del articulo.}
+
+\paragraph{}
+En este caso, el \textit{PCA} nos muestra tal y como podemos ver en la figura \ref{pcaTwoResult} , que necesitamos 5 atributos para que el modelo sea capaz de explicar (predecir) el 97\% de las observaciones.
+
+\paragraph{}
+\begin{figure}[!htb]
+  \centering
+    \includegraphics[width=0.9\textwidth]{images/metodologia_procesado_de_datos_pca2_result.png}
+    \caption{Resultado del \textit{PCA} de la segunda ejecución.}
+  \label{pcaTwoResult}
+\end{figure}
+
+\paragraph{}
+Para este caso, el \textit{PCA} nos muestra como podemos ver en la figura \ref{pcaTwoAtributos} , que los 5 componentes principales son, el atributo \textit{diagnostic\_main}, el atributo \textit{Year}, el atributo \textit{pubmed\_keys}, el atributo \textit{age} y el atributo \textit{articulo}.
+
+\paragraph{}
+\begin{figure}[!htb]
+  \centering
+    \includegraphics[width=0.9\textwidth]{images/metodologia_procesado_de_datos_pca2_atributos.png}
+    \caption{Proyección de los resultados del \textit{PCA} sobre los atributos del conjunto de datos para la segunda ejecución.}
+  \label{pcaTwoAtributos}
+\end{figure}
+
+\newpage
+\subsubsection{• Ejecutar el \textit{PCA} solo teniendo en cuenta las observaciones que tienen informado el atributo utilidad, añadiendo el mes y año del articulo, eliminando los atributos \textit{articulo} y \textit{gender} y expandiendo el atributo \textit{pubmed\_keys} a un valor por observación, en vez de tener todas las palabras clave de cada articulo en una única observación.}
+
+\paragraph{}
+En este caso, el \textit{PCA} nos muestra tal y como podemos ver en la figura \ref{pcaThreeResult} , que necesitamos 4 atributos para que el modelo sea capaz de explicar (predecir) el 90\% de las observaciones.
+
+\paragraph{}
+\begin{figure}[!htb]
+  \centering
+    \includegraphics[width=0.9\textwidth]{images/metodologia_procesado_de_datos_pca3_result.png}
+    \caption{Resultado del \textit{PCA} de la tercera ejecución.}
+  \label{pcaThreeResult}
+\end{figure}
+
+\paragraph{}
+Para este caso, el \textit{PCA} nos muestra como podemos ver en la figura \ref{pcaThreeAtributos} , que los 4 componentes principales son, el atributo \textit{diagnostic\_main}, el atributo \textit{Month}, el atributo \textit{pubmed\_keys} y el atributo \textit{age}.
+
+\paragraph{}
+\begin{figure}[!htb]
+  \centering
+    \includegraphics[width=0.9\textwidth]{images/metodologia_procesado_de_datos_pca3_atributos.png}
+    \caption{Proyección de los resultados del \textit{PCA} sobre los atributos del conjunto de datos para la tercera ejecución.}
+  \label{pcaThreeAtributos}
+\end{figure}
+
 
 \newpage
 \section{Enriquecimiento de los datos. Aproximación por Vecinos más próximos (K-NN)}
