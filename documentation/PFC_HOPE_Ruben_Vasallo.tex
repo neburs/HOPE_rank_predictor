@@ -7,6 +7,8 @@
 \usepackage{graphicx}
 \usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}
 \usepackage{hyperref}
+% http://texdoc.net/texmf-dist/doc/latex/pdfpages/pdfpages.pdf
+\usepackage{pdfpages}
 \usepackage{wrapfig}
 \hypersetup{
     colorlinks=true,
@@ -518,5 +520,13 @@ TODO
 \listoffigures
 
 \chapter{Anexos}
+
+\section{Random Forest}
+
+\includepdf[pages=-,nup=2x2]{codes/S4 - HOPE random forest.pdf}
+
+\section{Random Forest V2 }
+
+\includepdf[pages=-,nup=2x2]{codes/S4 - HOPE random forest-V2.pdf}
 
 \end{document}
