@@ -1,7 +1,11 @@
 #Latex documentation
-documentation/*.aux
-documentation/*.log
-documentation/*.out
-documentation/*.lof
-documentation/*.synctex.gz
-documentation/*.toc
+
+*.aux
+*.log
+*.out
+*.lof
+*.lot
+*.synctex.gz
+*.toc
+*.bbl
+*.blg
