@@ -8,7 +8,7 @@
 \usepackage{color}
 \usepackage{hhline} 		% extended styles for tables
 \usepackage{multirow}
-%\usepackage{subfigure}
+\usepackage{subfigure}
 \usepackage{acronym}
 \usepackage{hyperref}
 \usepackage{amsmath,amsmath,amssymb} 
@@ -16,7 +16,6 @@
 \usepackage{epsfig, amsmath}
 \usepackage{algorithm}
 \usepackage{algorithmic}
-\usepackage{subcaption} %For add subfigures
 
 % general settings
 \hypersetup{
@@ -72,7 +71,7 @@
 % listado de figuras
 \cleardoublepage
 \phantomsection
-\addcontentsline{toc}{chapter}{Listado de Figuras}
+\addcontentsline{toc}{chapter}{Llistado de Figuras}
 \listoffigures
 % listado de tablas
 \cleardoublepage
@@ -95,21 +94,10 @@
 
 % capitulos del documento
 \input{1_introduccion.tex}
-\newpage
-\input{2_objetivos.tex}
-\newpage
-\input{3_metodologia.tex}
-\newpage
-\input{4_planificacion.tex}
-\newpage
-\input{5_estado_del_arte.tex}
-
-\newpage
 
 % bibliografia
 \addcontentsline{toc}{chapter}{Bibliografía}
-\bibliography{referencias}
 \bibliographystyle{plain}
-
+\bibliography{referencias}
 
 \end{document}

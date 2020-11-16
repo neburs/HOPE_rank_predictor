@@ -1,0 +1,20 @@
+\section{Análisis de datos}
+\label{section:analisis_datos}
+
+\paragraph{}
+Tal y como comentamos en el capitulo de \hyperref[chapter:metodologia]{Metodologia}, al recibir los datos por parte del cliente y realizar el primer análisis superficial, se detecto que el volumen de datos no era suficiente como para que los resultados que pudieran surgir del estudio, fueran concluyentes. Todo y con eso se acordó (tal y como se refleja en el \hyperref[os:OS1]{OS1}) hacer una valoración de los datos para ver si se podrían enriquecer de algún modo, mientras el cliente intenta obtener más volumen de datos.
+
+\paragraph{}
+Para ello, transformamos los datos desde el origen a un formato columnar en el que poder aplicar los modelos predictivos. Una vez tenemos los datos transformados, observamos que existen ciertos atributos que contienen listas de opciones como son los atributos \textit{pubmed\_keys} (que corresponde a las palabras clave que la api de pubmed nos devuelve para esta observación), \textit{articles} (que corresponde a los ids de los artículos relacionados con esa observación), \textit{articlesRevisedYear} y \textit{articlesRevisedMonth} (que corresponde a los años y meses de los artículos según están ordenados en el atributo \textit{articles}). Como nuestro \hyperref[op:OP1]{OP1} es poder recomendar artículos útiles, necesitamos tener una observación por articulo, para poder analizar posteriormente de manera independiente si ese articulo fue útil o no para la observación a la que hace referencia, por lo que aplicaremos las transformaciones necesarias para acabar obteniendo la representación de un articulo con su correspondiente \textit{feedback} por parte de los profesionales sanitarios. Todos los pasos para realizar las transformaciones se pueden consultar en el anexo (\nameref{anx01:procesado_datos}).
+
+\paragraph{}
+Aplicados las transformaciones anteriores, nos quedan los siguientes atributos que describimos a continuación:
+
+\paragraph{• pedido.data.attributes.age:} Nos indica la edad del paciente.
+\paragraph{• pedido.data.attributes.diagnostic\_main:} Nos indica el diagnostico principal que dio el profesional sanitario para la enfermedad que tiene el paciente
+\paragraph{• pedido.data.attributes.gender:} Nos indica el sexo del paciente
+\paragraph{• articulo:} Nos indica el identificador del articulo relacionado con el diagnostico principal.
+\paragraph{• respuesta.articlesRevisedYear:} Nos indica el año de revisión del articulo referenciado por el identificador del campo articulo.
+\paragraph{• respuesta.articlesRevisedMonth:} Nos indica el mes de revisión del articulo referenciado por el identificador del campo articulo.
+\paragraph{• respuesta.pubmed\_keys:} Nos indica las palabras clave relacionadas con el articulo del campo articulo
+\paragraph{• utilidad:} Nos indica si un profesional sanitario ha considerado o no que el articulo referenciado en el campo articulo es útil para el diagnostico principal relacionado con la enfermedad del paciente. Este campo puede tener 3 valores: 1 para saber que el articulo es útil, 0 para indicar que no es útil y null para indicar que aun no se ha valorado.
