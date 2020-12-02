@@ -2,25 +2,25 @@
 \label{section:pca}
 
 \paragraph{}
-El análisis de componentes principales (o como se le conoce en ingles por '\textit{Principal Component Analysis}' o \textit{PCA}), es un componente fundamental en el análisis de los datos, ya que permite reducir el número de atributos de un conjunto de datos para eliminar el ruido que los posteriores análisis/modelos predictivos funcionen con mejor precision.
+El análisis de componentes principales (o como se le conoce en ingles por '\textit{Principal Component Analysis}' o \textit{PCA}), es un componente fundamental en el análisis de los datos, ya que permite reducir el número de atributos de un conjunto de datos para eliminar el ruido que los posteriores análisis/modelos predictivos funcionen con mejor precisión\cite{ref:pca_def}.
 
 \paragraph{}
 Por poner un ejemplo sencillo, imaginemos que tenemos un conjunto de datos de modelos de coche con muchísimos atributos de estos, como por ejemplo, el nombre del modelo, el color, el número de puertas, la cilindrada y la potencia, entre otros. Probablemente si intentáramos analizar los datos en busca de cual es el modelos que menos consume y quisiéramos crear un modelo predictivo con este objetivo, podríamos observar a simple vista que tenemos atributos que no nos son necesarios y que generaría distracción (ruido) a la hora de conseguir nuestro objetivo, como es el caso del atributo color, o el nombre del modelo.
 
 \paragraph{}
-El \textit{PCA} nos ayudara a encontrar cuales son los atributos más significativos del conjunto de datos para conseguir predecir el atributo que queremos, que en el caso que nos toca, es el atributo '\textit{utilidad}'.
+El \textit{PCA} nos ayudara a encontrar cuales son los atributos más significativos del conjunto de datos para conseguir predecir el atributo que queremos\cite{ref:pca_def}, que en el caso que nos toca, es el atributo '\textit{utilidad}'.
 
 \paragraph{}
 Es cierto que, en nuestro conjunto de datos, no tenemos un gran volumen de atributos, pero este proceso nos puede ayudar a eliminar atributos con poca relevancia, para así, poder simplificar el modelo predictivo final.
 
 \paragraph{}
-Para realizar el \textit{PCA} nos ayudaremos de la librería \textit{sklearn.decomposition} que ya nos ofrece implementada la lógica para ejecutarlo. Ademas realizaremos la transformacion de todos los atributos de Categóricos (texto) a Continuos (números continuos). Este paso se realiza para que el \textit{PCA} pueda realizar operaciones matemáticas sobre los valores de las observaciones. A este proceso se le conoce como factorización (\textit{factorize}). 
+Para realizar el \textit{PCA} nos ayudaremos de la librería \textit{sklearn.decomposition} que ya nos ofrece implementada la lógica para ejecutarlo. Ademas realizaremos la transformación de todos los atributos de Categóricos (texto) a Continuos (números continuos). Este paso se realiza para que el \textit{PCA} pueda realizar operaciones matemáticas sobre los valores de las observaciones. A este proceso se le conoce como factorización (\textit{factorize}). 
 
 \paragraph{}
 También estandarizaremos los valores a un rango de entre 1 y -1. Esto se realiza para igualar la importancia de todos los atributos, ya que en el paso anterior, al realizar la factorización, se nos puede dar el caso de tener valores muy altos (por ejemplo, al factorizar un atributo con 100 valores diferentes, se nos dará casos de observaciones que en un atributo tienen el valor 100, que puede ser más alto que otros valores que no se han transformado). Al realizar el PCA, si no se hace esta estandarización de los datos, los valores más altos se les dará más peso, pero no por eso pueden ser relevantes. Por lo que es imperativo el realizar esta estandarización.
 
 \paragraph{}
-Para realizar el PCA se han seguido 3 estrategias, para valorar que impacto tiene las observaciones segun el conjunto de datos a analizar. Hemos realizado 3 iteraciones con el siguiente conjunto de datos:
+Para realizar el PCA se han seguido 3 estrategias, para valorar que impacto tiene las observaciones según el conjunto de datos a analizar. Hemos realizado 3 iteraciones con el siguiente conjunto de datos:
 
 \paragraph{• 1: } El dataset completo con las transformaciones mencionadas en el apartado \nameref{section:analisis_datos}
 
@@ -29,4 +29,4 @@ Para realizar el PCA se han seguido 3 estrategias, para valorar que impacto tien
 \paragraph{• 3: } El mismo dataset realizado en la iteración 2 pero añadiendo el mes y año del articulo, eliminando los atributos \textit{gender} (ya que todas las observaciones tienen el mismo valor) y articulo (que solo representa un identificador de un articulo). Ademas se expande el atributo \textit{respuesta.pubmed\_keys} para que exista una observación por cada keyword.
 
 \paragraph{}
- Una vez realizado esa transformación ya podemos ejecutar el PCA. Todos los pasos para realizar el PCA se pueden consultar en el anexo (\nameref{anx02:pca1}) para la iteración 1, el anexo (\nameref{anx02:pca2}) para la iteración 2 y el anexo (\nameref{anx02:pca3}) para la iteración 3.
+Una vez realizado esa transformación ya podemos ejecutar el PCA. Todos los pasos para realizar el PCA se pueden consultar en el anexo (\nameref{anx02:pca1}) para la iteración 1, el anexo (\nameref{anx02:pca2}) para la iteración 2 y el anexo (\nameref{anx02:pca3}) para la iteración 3.
