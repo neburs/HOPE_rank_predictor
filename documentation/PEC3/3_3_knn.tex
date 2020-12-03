@@ -5,11 +5,11 @@
 Debido a que tenemos un conjunto de datos con poco volumen, se acuerda con el cliente el intentar enriquecer los datos (\hyperref[os:OS3]{OS3}) con los conjuntos de datos que tenemos que no tienen informado el atributo a predecir.
 
 \paragraph{}
-Para realizar esta operación utilizaremos el algoritmo de Enrquicecimiento por Aproximación de Vecinos más próximos (conocido por K-Nearest-Neighbor o K-NN). Este Algoritmo pretende asociar si un registro es de un conjunto de datos o del otro en base la a aproximación de otros resultados que si se conoce su resultado \cite{ref:knn_def}.
+Para realizar esta operación utilizaremos el algoritmo de Enrquicecimiento por Aproximación de Vecinos más próximos (conocido por K-Nearest-Neighbor o K-NN). Este Algoritmo pretende asociar si un registro pertenece a un conjunto de datos o a otro dependiendo de la aproximación de otros resultados de los que si se conoce su valor \cite{ref:knn_def}.
 
 \paragraph{}
 Para poder ejecutar el algoritmo de K-NN necesitamos realizar la transformación de todos los
-atributos Categóricos (texto) a Continuos (números continuos) igual que se realizo para el caso del \hyperref[section:pca]{PCA}. Esto es debido a que el algoritmo necesita tener valores numéricos para poder trabajar con los datos\cite{ref:knn_scaling}. Con esta transformación ya podemos realizar operaciones matemáticas con el conjunto de datos.
+atributos Categóricos (texto) a Continuos (números continuos) y estandarizar, igual que se realizo para el caso del \hyperref[section:pca_standar]{PCA}. Esto es debido a que el algoritmo necesita tener valores numéricos para poder trabajar con los datos\cite{ref:knn_scaling}. Con esta transformación ya podemos realizar operaciones matemáticas con el conjunto de datos.
 
 \paragraph{}
 Para realizar el K-NN se han seguido 2 estrategias, para valorar que impacto tiene las observaciones según el conjunto de datos a analizar. Hemos realizado 2 iteraciones con el siguiente conjunto de datos:
