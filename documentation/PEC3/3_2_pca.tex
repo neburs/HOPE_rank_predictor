@@ -25,9 +25,9 @@ Para realizar el PCA se han seguido 3 estrategias, para valorar que impacto tien
 
 \paragraph{• 1: } El dataset completo con las transformaciones mencionadas en el apartado \nameref{section:analisis_datos}
 
-\paragraph{• 2: } El mismo dataset de la anterior iteración pero cogiendo solo las observaciones que se ha informado el atributo utilidad.
+\paragraph{• 2: } \label{section:pca_case2}El mismo dataset de la anterior iteración pero cogiendo solo las observaciones que se ha informado el atributo utilidad.
 
-\paragraph{• 3: } El mismo dataset realizado en la iteración 2 pero añadiendo el mes y año del articulo, eliminando los atributos \textit{gender} (ya que todas las observaciones tienen el mismo valor) y articulo (que solo representa un identificador de un articulo). Ademas se expande el atributo \textit{respuesta.pubmed\_keys} para que exista una observación por cada keyword.
+\paragraph{• 3: } \label{section:pca_case3}El mismo dataset realizado en la iteración 2 pero añadiendo el mes y año del artículo, eliminando los atributos \textit{gender} (ya que todas las observaciones tienen el mismo valor) y artículo (que solo representa un identificador de un artículo). Ademas se expande el atributo \textit{respuesta.pubmed\_keys} para que exista una observación por cada keyword.
 
 \paragraph{}
 Una vez realizado esa transformación ya podemos ejecutar el PCA. Todos los pasos para realizar el PCA se pueden consultar en el anexo (\nameref{anx02:pca1}) para la iteración 1, el anexo (\nameref{anx02:pca2}) para la iteración 2 y el anexo (\nameref{anx02:pca3}) para la iteración 3.

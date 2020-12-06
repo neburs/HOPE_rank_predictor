@@ -18,7 +18,7 @@ Dado que el \textit{PCA} solo nos muestra 3 atributos como relevantes, podemos r
 
 \begin{figure}[!htb]
   \centering
-    \includegraphics[width=0.3\textwidth]{images/resultados_procesado_de_datos_pca1_graphic.png}
+    \includegraphics[width=0.4\textwidth]{images/resultados_procesado_de_datos_pca1_graphic.png}
     \caption{Proyección delos resultados del \textit{PCA} en una gráfica.}
   \label{pcaOneGraphic}
 \end{figure}
@@ -37,7 +37,7 @@ Si le pedimos al modelo que nos indique cuales son los 3 componentes que ha dete
 Para este caso, el \textit{PCA} nos muestra que \textbf{los 3 componentes principales son, el atributo \textit{pubmed\_keys}, el atributo \textit{age} y el atributo \textit{diagnostic\_main}}.
 
 \subsection{Conjunto de datos solo con atributo utilidad definido}
-
+\label{result:pca_case2}
 \paragraph{}
 En este caso, el \textit{PCA} nos muestra tal y como podemos ver en la figura \ref{pcaTwoResult}, que \textbf{necesitamos 5 atributos} para que el modelo sea \textbf{capaz de explicar (predecir) el 97\% de las observaciones}.
 
@@ -49,7 +49,7 @@ En este caso, el \textit{PCA} nos muestra tal y como podemos ver en la figura \r
 \end{figure}
 
 \paragraph{}
-Para este caso, el \textit{PCA} nos muestra tal y como podemos ver en la figura \ref{pcaTwoAtributos}, que los \textbf{5 componentes principales} son, \textbf{el atributo \textit{diagnostic\_main}, el atributo \textit{Year}, el atributo \textit{pubmed\_keys}, el atributo \textit{age} y el atributo \textit{articulo}}.
+Para este caso, el \textit{PCA} nos muestra tal y como podemos ver en la figura \ref{pcaTwoAtributos}, que los \textbf{5 componentes principales} son, \textbf{el atributo \textit{diagnostic\_main}, el atributo \textit{Year}, el atributo \textit{pubmed\_keys}, el atributo \textit{age} y el atributo \textit{artículo}}.
 
 \begin{figure}[!htb]
   \centering
@@ -58,8 +58,8 @@ Para este caso, el \textit{PCA} nos muestra tal y como podemos ver en la figura 
   \label{pcaTwoAtributos}
 \end{figure}
 
-\subsection{Conjunto de datos solo con atributo utilidad definido, añadiendo el mes y año del articulo, eliminando los atributos \textit{gender} y articulo y expandiendo el atributo \textit{respuesta.pubmed\_keys}}
-
+\subsection{Conjunto de datos solo con atributo utilidad definido, añadiendo el mes y año del artículo, eliminando los atributos \textit{gender} y artículo y expandiendo el atributo \textit{respuesta.pubmed\_keys}}
+\label{result:pca_case3}
 \paragraph{}
 En este caso, el \textit{PCA} nos muestra tal y como podemos ver en la figura \ref{pcaThreeResult}, que \textbf{necesitamos 4 atributos} para que el modelo sea \textbf{capaz de explicar (predecir) el 90\% de las observaciones}.
 

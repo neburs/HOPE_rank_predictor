@@ -1,0 +1,22 @@
+\section{Regresión Logística.}
+\label{section:lr}
+
+\paragraph{}
+Una vez analizado el conjunto de datos aportado por el cliente, podemos ver que finalmente el atributo a predecir \textit{utilidad} es de tipo booleano (0 haciendo referencia a los documentos con poco o nada de interés para los profesionales sanitarios y 1 para los que si son de interés).
+
+\paragraph{}
+Como el problema a resolver es de clasificación, escogemos como posible modelo de aprendizaje supervisado para clasificación a analizar el conocido como Regresión Logística '\textit{Logistic regression}'\cite{ref:lr_def} \hyperref[os:OS4]{OS4}. Escogemos este como posible modelo de confianza a analizar debido a que es un modelo muy sencillo de entrenar y comprender su comportamiento\cite{ref:lr_understanding}.
+
+\paragraph{}
+Igual que para el caso del \hyperref[section:knn]{K-NN}, realizaremos la transformación de todos los atributos Categóricos (texto) a Continuos (números continuos) y estandarizaremos los valores.
+
+\paragraph{}
+Para ejecutar el modelo de Regresión Logística se han seguido 2 estrategias, para valorar que impacto tiene las observaciones según el conjunto de datos a analizar. Hemos realizado 2 iteraciones con el siguiente conjunto de datos:
+
+\label{section:lr_casos}
+\paragraph{• 1: } El dataset completo con las transformaciones mencionadas en el apartado \nameref{section:analisis_datos} eliminando las observaciones que no tenían identificado el atributo edad y escogiendo los atributos que nos ha indicado como relevantes el \hyperref[result:pca_case2]{caso de estudio 2} del PCA.
+
+\paragraph{• 2: } El mismo dataset realizado en la iteración 1 pero eliminando los atributos \textit{gender} (ya que todas las observaciones tienen el mismo valor) y artículo (que solo representa un identificador de un artículo). Ademas se expande el atributo \textit{respuesta.pubmed\_keys} para que exista una observación por cada keyword. También escogemos solo los atributos que nos ha indicado como relevantes el \hyperref[result:pca_case3]{caso de estudio 3} del PCA.
+
+\paragraph{}
+Todos los pasos para realizar la Regresión Logística se pueden consultar en el anexo (\nameref{anx04:rl1}) para la iteración 1 y el anexo (\nameref{anx04:rl2}) para la iteración 2.

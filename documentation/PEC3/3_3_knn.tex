@@ -2,7 +2,7 @@
 \label{section:knn}
 
 \paragraph{}
-Debido a que tenemos un conjunto de datos con poco volumen, se acuerda con el cliente el intentar enriquecer los datos (\hyperref[os:OS3]{OS3}) con los conjuntos de datos que tenemos que no tienen informado el atributo a predecir.
+Debido a que tenemos un conjunto de datos con poco volumen, se acuerda el intentar enriquecer los datos (\hyperref[os:OS3]{OS3}) con los conjuntos de datos que tenemos que no tienen informado el atributo a predecir.
 
 \paragraph{}
 Para realizar esta operación utilizaremos el algoritmo de Enrquicecimiento por Aproximación de Vecinos más próximos (conocido por K-Nearest-Neighbor o K-NN). Este Algoritmo pretende asociar si un registro pertenece a un conjunto de datos o a otro dependiendo de la aproximación de otros resultados de los que si se conoce su valor \cite{ref:knn_def}.
@@ -16,7 +16,7 @@ Para realizar el K-NN se han seguido 2 estrategias, para valorar que impacto tie
 
 \paragraph{• 1: } El dataset completo con las transformaciones mencionadas en el apartado \nameref{section:analisis_datos} eliminando las observaciones que no tenían identificado el atributo edad.
 
-\paragraph{• 2: } El mismo dataset realizado en la iteración 1 pero eliminando los atributos \textit{gender} (ya que todas las observaciones tienen el mismo valor) y articulo (que solo representa un identificador de un articulo). Ademas se expande el atributo \textit{respuesta.pubmed\_keys} para que exista una observación por cada keyword.
+\paragraph{• 2: } El mismo dataset realizado en la iteración 1 pero eliminando los atributos \textit{gender} (ya que todas las observaciones tienen el mismo valor) y artículo (que solo representa un identificador de un artículo). Ademas se expande el atributo \textit{respuesta.pubmed\_keys} para que exista una observación por cada keyword.
 
 \paragraph{}
 Una vez realizado esa transformación ya podemos ejecutar el K-NN. Todos los pasos para realizar el K-NN se pueden consultar en el anexo (\nameref{anx03:knn1}) para la iteración 1 y el anexo (\nameref{anx03:knn2}) para la iteración 2.
