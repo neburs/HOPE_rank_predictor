@@ -17,7 +17,7 @@ Esto es debido a que el modelo de Bosques Aleatorios '\textit{Random Forests}'\c
 Para realizar este estudio ejecutaremos el modelo con diferentes valores de la variable \textit{n\_estimators}\cite{ref:rf_random_forest_classifier} (número de arboles en el bosque) y contrastaremos que porcentaje de acierto tiene el modelo con un subconjunto del propio conjunto de datos que conocemos su valor final. Como podemos ver en la figura \ref{rfTrainCase1}, el valor más optimo del \textbf{estimador es 40}, con un \textbf{porcentaje de acierto del 61\%}.
 
 \paragraph{}
-Si mostramos la matriz de confusión\cite{ref:confusion_matrix} (figura \ref{rfCMCase1}) para poder ver que porcentaje de aciertos tiene el modelo con el conjunto de test, vemos que tiene un porcentaje de aciertos bastante bajo llegando a rozar la aleatoriedad.
+Si mostramos la matriz de confusión\cite{ref:confusion_matrix} (figura \ref{rfCMCase1}) para poder ver que porcentaje de aciertos tiene el modelo con el conjunto de test, vemos que tiene un \textbf{porcentaje de aciertos bastante bajo} llegando a rozar la aleatoriedad.
 
 \begin{figure}[!htb]
     \begin{subfigure}[b]{0.45\linewidth}
@@ -42,7 +42,7 @@ Si mostramos la matriz de confusión\cite{ref:confusion_matrix} (figura \ref{rfC
 Igual que en el caso anterior, realizaremos el estudio para detectar a partir de que número de \textit{n\_estimators}\cite{ref:rf_random_forest_classifier} (número de arboles en el bosque) podemos dar por supuesto que el resultado es de un grupo u otro. A diferencia del caso anterior, podemos ver en la figura \ref{rfTrainCase2}, el valor más optimo del \textbf{estimador es 10}, con un \textbf{porcentaje de acierto del 89\%}.
 
 \paragraph{}
-Si mostramos la matriz de confusión\cite{ref:confusion_matrix} (figura \ref{rfCMCase2}) para poder ver que porcentaje de aciertos tiene el modelo con el conjunto de test, vemos que tiene un porcentaje de aciertos bastante aceptable.
+Si mostramos la matriz de confusión\cite{ref:confusion_matrix} (figura \ref{rfCMCase2}) para poder ver que porcentaje de aciertos tiene el modelo con el conjunto de test, vemos que tiene un \textbf{porcentaje de aciertos bastante aceptable}.
 
 \begin{figure}[!htb]
     \begin{subfigure}[b]{0.45\linewidth}
@@ -65,4 +65,4 @@ Si mostramos la matriz de confusión\cite{ref:confusion_matrix} (figura \ref{rfC
 \label{resultados:rf_conclusiones}
 
 \paragraph{}
-En este caso, podemos apreciar que el caso 2 se ajusta a unos resultados aceptables ya que esta lo suficientemente ajustado para que de resultados razonables si estar sobreajustado\cite{ref:knn_overfiting}. Por lo que recomendamos al cliente como posible modelo final el modelo de Bosques Aleatorios '\textit{Random Forests}' aplicando las transformaciones al conjunto de datos aplicados en el caso de estudio 2.
+En este caso, podemos apreciar que el \textbf{caso 2 se ajusta a unos resultados aceptables} ya que esta lo suficientemente ajustado para que de resultados razonables sin estar sobreajustado\cite{ref:knn_overfiting}. Por lo que recomendamos al cliente como posible modelo final el modelo de Bosques Aleatorios '\textit{Random Forests}' aplicando las transformaciones al conjunto de datos realizado en el caso de estudio 2.
