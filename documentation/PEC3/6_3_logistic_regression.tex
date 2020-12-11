@@ -8,12 +8,12 @@ Al realizar las mismas transformaciones que para el caso de \hyperref[resultados
 \subsection{(Caso de estudio 1) Resultados del entrenamiento con el Conjunto de datos solo con atributo utilidad definido y escogiendo los atributos que nos ha indicado como relevantes el \hyperref[result:pca_case2]{caso de estudio 2} del PCA}
 
 \paragraph{}
-Realizamos el entrenamiento del modelo de Regresión Logística\cite{ref:lr_def} y aplicamos una validación cruzada\cite{ref:lr_cross_validation} para valorar su precisión. Este nos muestra una \textbf{precisión de cerca del 51\% con una desviación estándar de casi el 28\%}, lo que nos indica que el modelo tiene una precisión baja. Al realizar la predicción \textbf{sobre el conjunto de validación}, este nos da \textbf{una precisión del 61\%}. Lo que nos confirma que el modelo \textbf{tiene una precisión muy baja} (llegando casi al nivel de la aleatoriedad).
+Realizamos el entrenamiento del modelo de Regresión Logística\cite{ref:lr_def} y aplicamos una validación cruzada\cite{ref:lr_cross_validation} para valorar su precisión. Este nos muestra una \textbf{precisión de cerca del 51\% con una desviación estándar de casi el 28\%}, lo que nos indica que el modelo tiene una precisión baja. Al realizar la predicción \textbf{sobre el conjunto de validación}, este nos da \textbf{una precisión del 65\%}. Lo que nos confirma que el modelo \textbf{tiene una precisión muy baja} (llegando casi al nivel de la aleatoriedad).
 
 \paragraph{}
 Si mostramos la matriz de confusión\cite{ref:confusion_matrix} (figura \ref{lrCMCase1}) para poder ver que porcentaje de aciertos tiene el modelo con el conjunto de test, confirmamos que el porcentaje de aciertos es bajo.
 
-\subsection{(Caso de estudio 2) Conjunto de datos solo con atributo utilidad definido, añadiendo el mes y año del artículo, eliminando los atributos \textit{gender} y artículo y expandiendo el atributo \textit{respuesta.pubmed\_keys}. También escogemos solo los atributos que nos ha indicado como relevantes el \hyperref[result:pca_case3]{caso de estudio 3} del PCA.}
+\subsection{(Caso de estudio 2) Conjunto de datos solo con atributo utilidad definido, añadiendo el mes y año del artículo, eliminando los atributos \textit{gender} y artículo y expandiendo el atributo \textit{respuesta.pubmed\_keys}. También escogemos solo los atributos que nos ha indicado como relevantes el \hyperref[result:pca_case3]{caso de estudio 3} del PCA}
 
 \paragraph{}
 Igual que para el caso anterior realizamos el entrenamiento y aplicamos la validación cruzada para valorar su precisión. Este nos muestra \textbf{una precisión aun menor que para el caso de estudio 1 (49\%)}.

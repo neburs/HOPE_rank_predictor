@@ -24,7 +24,7 @@ También, para el \textbf{caso de estudio 2}, se da el caso que la distribución
 \paragraph{}
 Finalmente, \textbf{para el entrenamiento y posterior validación} de los modelos nos ayudaremos de la función '\textit{train\_test\_split}'\cite{ref:knn_train_test_split} del paquete '\textit{sklearn\.model\_selection}' que nos permite \textbf{dividir el conjunto de datos en dos grupos}, siendo el \textbf{primer grupo} para realizar el \textbf{entrenamiento} de los modelos que \textbf{corresponde al 75\% del total} de observaciones y el segundo grupo para realizar la \textbf{validación} de los modelos que \textbf{corresponde al 25\% del total} de observaciones.
 
-\subsection{(Caso de estudio 1) Resultados del entrenamiento con el Conjunto de datos solo con atributo utilidad definido.}
+\subsection{(Caso de estudio 1) Resultados del entrenamiento con el Conjunto de datos solo con atributo utilidad definido}
 
 \paragraph{}
 Antes de poder entrenar el algoritmo \textit{K-NN} es necesario realizar un estudio para detectar a partir de que número de vecinos mas próximos (valor K), podemos dar por supuesto que el resultado esta relacionado con ellos. El algoritmo también nos permite poder decidir como calcular la distancia entre los vecinos (bien dando más relevancia a los vecinos con menos distancia '\textit{distance}'\cite{ref:knn_doc} o bien dando la misma relevancia a todos los vecinos que están próximos '\textit{uniform}'\cite{ref:knn_doc}).
@@ -51,7 +51,7 @@ Si mostramos la matriz de confusión\cite{ref:confusion_matrix} (figura \ref{knn
 	\label{knnCase1}
 \end{figure}
 
-\subsection{(Caso de estudio 2) Conjunto de datos solo con atributo utilidad definido, añadiendo el mes y año del artículo, eliminando los atributos \textit{gender} y artículo y expandiendo el atributo \textit{respuesta.pubmed\_keys}.}
+\subsection{(Caso de estudio 2) Conjunto de datos solo con atributo utilidad definido, añadiendo el mes y año del artículo, eliminando los atributos \textit{gender} y artículo y expandiendo el atributo \textit{respuesta.pubmed\_keys}}
 
 \paragraph{}
 Igual que en el caso anterior, realizaremos el estudio para detectar a partir de que número de vecinos mas próximos (valor K), podemos dar por supuesto que el resultado esta relacionado con ellos. A diferencia del caso anterior, podemos ver en la figura \ref{knnTrainCase2}, que el valor más optimo de \textbf{K es 1} utilizando el calculo de la distancia \textbf{'\textit{uniform}'}, con un \textbf{porcentaje de acierto del 90\%}.

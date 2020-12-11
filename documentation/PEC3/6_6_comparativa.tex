@@ -1,0 +1,23 @@
+\section{Comparativa de resultados de los modelos}
+\label{resultados:compare}
+
+\paragraph{}
+Una vez realizado el estudio de los tres modelos, podemos ver en la tabla \ref{table:comparative} que los mejores resultados los obtenemos con las trasformaciones realizadas en el caso de estudio 2 en dos de los 3 modelos (Conjunto de datos solo con atributo utilidad definido, añadiendo el mes y año del artículo, eliminando los atributos \textit{gender} y artículo y expandiendo el atributo \textit{respuesta.pubmed\_keys}. También escogemos solo los atributos que nos ha indicado como relevantes el \hyperref[result:pca_case3]{caso de estudio 3} del PCA.).
+
+\paragraph{}
+Ademas el modelo que mejor precisión nos da para ese caso de estudio es el modelo de Bosques aleatorios, seguido de cerca por el modelo de \textit{Support Vector Machine}.
+
+\paragraph{}
+\begin{table}[!htb]
+	\begin{tabular}{ | p{4cm} | c | c | c | }
+		\hline Modelos & Regresión Logística & \textbf{Bosques Aleatorios} & Support Vector Machine \\ 
+		\hline
+		\hline
+		Caso de estudio 1 & 65.78\% & 61.53\% & 53.85\% \\
+		\textbf{Caso de estudio 2} & 49.03\% & \textbf{89.9\%} & 89.42\% \\ \hline
+	\end{tabular}
+		\caption{Comparativa de resultados entre los modelos.} \label{table:comparative}
+\end{table}
+
+\paragraph{}
+\textbf{Nota}: No añadiremos a la comparativa el modelo K-NN ya que, aunque se podría utilizar como modelo predictivo igual que en los otros casos, en este estudio no se ha entrenado con los mismos atributos que se han entrenado los otros modelos, por lo que no seria justo comparar los resultados con los otros modelos.

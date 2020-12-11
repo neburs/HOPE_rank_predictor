@@ -1,8 +1,8 @@
-\section{Enriquecimiento de los datos.}
+\section{Enriquecimiento de los datos}
 \label{section:knn}
 
 \paragraph{}
-Debido a que tenemos un conjunto de datos con poco volumen, se acuerda el intentar enriquecer los datos (\hyperref[os:OS3]{OS3}) con los conjuntos de datos que tenemos que no tienen informado el atributo a predecir.
+Debido a que tenemos un conjunto de datos con poco volumen, se acuerda el intentar enriquecer los datos (\hyperref[os:OS3]{OS3}) que no tienen un valor '\textit{utilidad}' definido. Como vimos en el apartado de \hyperref[section:analisis_datos_utilidad]{análisis de datos}, en el conjunto de datos aparecen muchas observaciones que no tienen indicado el atributo '\textit{utilidad}', ya que todavía no han sido valorados por los profesionales sanitarios. Estas observaciones se podrían rellenar intentando aproximarlas teniendo en cuenta valores de observaciones con similares características. En los siguientes apartados valoraremos si el resultado de esas aproximaciones seria lo suficientemente correcto para acabar aplicándolo.
 
 \paragraph{}
 Para realizar esta operación utilizaremos el algoritmo de Enrquicecimiento por Aproximación de Vecinos más próximos (conocido por K-Nearest-Neighbor o K-NN). Este Algoritmo pretende asociar si un registro pertenece a un conjunto de datos o a otro dependiendo de la aproximación de otros resultados de los que si se conoce su valor \cite{ref:knn_def}.

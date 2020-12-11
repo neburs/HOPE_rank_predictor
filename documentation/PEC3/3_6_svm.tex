@@ -1,0 +1,14 @@
+\section{Máquinas de vector soporte '\textit{Support Vector Machines}'}
+\label{section:svm}
+
+\paragraph{}
+Finalmente estudiaremos un tercer modelo como posible para intentar resolver el problema, el conocido como Máquinas de Vector Soporte '\textit{Support Vector Machines}'\cite{ref:svm_def} \hyperref[os:OS6]{OS6}. Escogemos este como posible modelo de confianza a analizar, debido a su facilidad de entrenamiento, al tener multitud de funciones kernel\cite{ref:svm_kernels_def} (que se van ampliando\cite{ref:svm_kernels_publication} con el paso del tiempo) para permitir encontrar un ajuste optimo del modelo. Por contra, este punto fuerte puede también convertirse en su gran inconveniente debido a la complejidad de algunas funciones kernel a la hora de interpretar y comprender su comportamiento. Todo y con eso merece la pena analizarlo para ver si puede convertirse en un posible candidato para solucionar el problema descrito por el cliente.
+
+\paragraph{}
+Igual que para el caso del \hyperref[section:knn]{K-NN}, realizaremos la transformación de todos los atributos Categóricos (texto) a Continuos (números continuos) y estandarizaremos los valores.
+
+\paragraph{}
+Para ejecutar el modelo de Máquinas de vector soporte se han seguido las mismas \hyperref[section:lr_casos]{2 estrategias} que para el caso del modelo de Regresión Logística, para así poder comparar los resultados de este modelo con los anteriores.
+
+\paragraph{}
+Todos los pasos para ejecutar el modelo de Máquinas de Vector Soporte se pueden consultar en el anexo (\nameref{anx06:svm1}) para la iteración 1 y el anexo (\nameref{anx06:svm2}) para la iteración 2.

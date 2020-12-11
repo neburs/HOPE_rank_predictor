@@ -1,4 +1,4 @@
-\section{Bosques Aleatorios '\textit{Random Forests}'.}
+\section{Bosques Aleatorios '\textit{Random Forests}'}
 \label{resultados:rf}
 
 \subsection{Características de los conjuntos de datos a analizar}
@@ -36,7 +36,7 @@ Si mostramos la matriz de confusión\cite{ref:confusion_matrix} (figura \ref{rfC
 	\label{rfCase1}
 \end{figure}
 
-\subsection{(Caso de estudio 2) Conjunto de datos solo con atributo utilidad definido, añadiendo el mes y año del artículo, eliminando los atributos \textit{gender} y artículo y expandiendo el atributo \textit{respuesta.pubmed\_keys}. También escogemos solo los atributos que nos ha indicado como relevantes el \hyperref[result:pca_case3]{caso de estudio 3} del PCA.}
+\subsection{(Caso de estudio 2) Conjunto de datos solo con atributo utilidad definido, añadiendo el mes y año del artículo, eliminando los atributos \textit{gender} y artículo y expandiendo el atributo \textit{respuesta.pubmed\_keys}. También escogemos solo los atributos que nos ha indicado como relevantes el \hyperref[result:pca_case3]{caso de estudio 3} del PCA}
 
 \paragraph{}
 Igual que en el caso anterior, realizaremos el estudio para detectar a partir de que número de \textit{n\_estimators}\cite{ref:rf_random_forest_classifier} (número de arboles en el bosque) podemos dar por supuesto que el resultado es de un grupo u otro. A diferencia del caso anterior, podemos ver en la figura \ref{rfTrainCase2}, el valor más optimo del \textbf{estimador es 10}, con un \textbf{porcentaje de acierto del 89\%}.
