@@ -75,8 +75,8 @@ Si mostramos la matriz de confusión\cite{ref:confusion_matrix} (figura \ref{knn
 	\label{knnCase1}
 \end{figure}
 
-\subsection{Conclusiones del algoritmo K-NN}
+\subsection{Conclusiones del modelo K-NN}
 \label{resultados:knn_conclusiones}
 
 \paragraph{}
-Pese a que aparentemente, el caso de estudio 1 tiene unos resultados aceptables, \textbf{aconsejamos} al cliente \textbf{no utilizar el algoritmo de \textit{K-NN}} para enriquecer los datos del dataset, prediciendo las observaciones que se desconocen su resultado final. Esto es \textbf{debido} a que detectamos que \textbf{el conjunto de datos se encuentra \hyperref[resultados:knn_caracteristicas]{sesgado}} en varios atributos, lo que hará que el modelo tienda a dar falsos positivos (como hemos podido ver en el caso de estudio 2), perjudicando el entrenamiento de posteriores modelos predictivos que estudiaremos en este documento.
+Pese a que aparentemente, el caso de estudio 1 tiene unos resultados aceptables, \textbf{aconsejamos} al cliente \textbf{no utilizar el algoritmo de \textit{K-NN}} para enriquecer los datos del dataset, prediciendo las observaciones que se desconocen su resultado final. Esto es \textbf{debido} a que detectamos que \textbf{el conjunto de datos se encuentra \hyperref[resultados:knn_caracteristicas]{sesgado}}\cite{ref:sesgo} en varios atributos, lo que hará que el modelo tienda a dar falsos positivos (como hemos podido ver en el caso de estudio 2), perjudicando el entrenamiento de posteriores modelos predictivos que estudiaremos en este documento.
