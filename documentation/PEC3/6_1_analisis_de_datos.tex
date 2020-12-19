@@ -14,7 +14,7 @@ Para este caso, al ejecutar el \textit{PCA} con el conjunto de datos completo, e
 \end{figure}
 
 \paragraph{}
-Dado que el \textit{PCA} solo nos muestra 3 atributos como relevantes, podemos representar los resultados de las observaciones a un gráfico que mostramos en la figura \ref{pcaOneGraphic} dibujando los 3 componentes principales como si fueran 3 dimensiones, y pintamos los valores a predecir sobre estos (aplicando el color rojo a las observaciones que no consideran útiles, y azul a los que si se consideran útiles), podemos observar que la gran mayoría de los rojo se encuentran en el plano del componente principal 1 y dos, mientras que el azul esta mas repartidos en los dos planos.
+Dado que el \textit{PCA} solo nos muestra 3 atributos como relevantes, podemos representar los resultados de las observaciones a un gráfico que mostramos en la figura \ref{pcaOneGraphic} dibujando los 3 componentes principales como si fueran 3 dimensiones, y pintamos los valores a predecir sobre estos (aplicando el color rojo a las observaciones que no consideran útiles, y azul a los que si se consideran útiles), podemos observar que la gran mayoría de los rojo se encuentran en el plano del componente principal 1 y 2, mientras que el azul esta más repartidos en los dos planos.
 
 \begin{figure}[!htb]
   \centering
@@ -50,6 +50,9 @@ En este caso, el \textit{PCA} nos muestra tal y como podemos ver en la figura \r
 
 \paragraph{}
 Para este caso, el \textit{PCA} nos muestra tal y como podemos ver en la figura \ref{pcaTwoAtributos}, que los \textbf{5 componentes principales} son, \textbf{el atributo \textit{diagnostic\_main}, el atributo \textit{Year}, el atributo \textit{pubmed\_keys}, el atributo \textit{age} y el atributo \textit{artículo}}.
+
+\paragraph{}
+La diferencia del número de atributos necesarios que nos muestra el \textit{PCA} respecto al conjunto anterior seguramente este debido a que el conjunto completo contiene un gran volumen de observaciones con el atributo '\textit{utilidad}' sin definir, lo que hace que prácticamente cualquier valor que tengan los atributos se acaben asociando a un resultado sin definir, como pasa en el conjunto de datos original. Al no tener en cuenta las observaciones con el atributo '\textit{utilidad}' sin definir, el \textit{PCA} ya nos indica que necesita analizar más atributos para acabar explicando el valor final.
 
 \begin{figure}[!htb]
   \centering
