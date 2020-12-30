@@ -1,0 +1,33 @@
+\chapter{Metodología}
+\label{chapter:metodologia}
+
+
+\section{Análisis del contexto}
+
+\paragraph{}
+Para poder comprender y abordar con éxito el \hyperref[os:OS1]{OS1} se realizó dos reuniones en donde el cliente expuso el origen de los datos para poder realizar el estudio.
+
+\paragraph{}
+En estas reuniones se observo que los datos facilitados por el usuario requerían de una limpieza y tratamiento, ya que muchas observaciones tenían información poco relevante que podía generar ruido\cite{ref:noisy_data}.
+
+\section{Limitaciones detectadas}
+\label{section:limit}
+
+\paragraph{}
+Al realizar un primer análisis visual, se detecto que \textbf{los datos aportados} por el cliente eran \textbf{insuficientes para completar el \hyperref[op:OP1]{OP1}}, ya que solo se disponía de la información respecto de si una referencia bibliográfica había sido útil o no, pero no se disponía del grado de utilidad que había tenido esa referencia para poder llegar a realizar una clasificación (\textit{ranking}). El cliente nos indico que en el momento actual no disponía de ese nivel de detalle.
+
+\paragraph{}
+\textbf{Se acordó con el cliente} que intentaría conseguir más volumen de información y con más detalle para poder realizar la clasificación (\textit{ranking}). Se comento que \textbf{se realizaría una aproximación} para indicar si \textbf{una referencia bibliográfica es valida}, dejando para mas adelante la opción de poder realizar la clasificación (\textit{ranking}) si se consigue ese nivel de detalle por parte del cliente.
+
+\paragraph{}
+También se pudo comprobar que \textbf{el cliente disponía de un volumen de observaciones bajo} por lo que se planteo la posibilidad de, o intentar obtener más observaciones, o enriquecer las actuales generando nuevos datos por aproximación a los reales.
+
+\paragraph{}
+Finalmente se decidió estudiar si era viable generar nuevos valores por aproximación, debido a que en el momento en que se trató el problema, el cliente no podía facilitar más datos. Si a lo largo del estudio, conseguía obtener nuevas observaciones, estas serian añadidas al estudio para aproximar mejor la solución final.
+
+\input{3_1_procesado_de_datos.tex}
+\input{3_2_pca.tex}
+\input{3_3_knn.tex}
+\input{3_4_logistic_regression.tex}
+\input{3_5_random_forest.tex}
+\input{3_6_svm.tex}

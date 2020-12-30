@@ -1,0 +1,26 @@
+\section{Objetivo Principal}
+
+\paragraph{}
+Después de analizar los resultados obtenidos al entrenar los 3 modelos podemos concluir que, para predecir los resultados basándonos en los datos que tenemos actualmente, el \textbf{modelo que mejor precisión da} es el \hyperref[table:comparative]{\textbf{\textit{Bosques aleatorios}}}.
+
+\paragraph{}
+Para poder \textbf{predecir nuevos resultados}, sera necesario \textbf{aplicar} a estos, \textbf{las transformaciones que se han aplicado en el caso de estudio 2} (desde el formato de dato original, añadiendo el mes y año del artículo, eliminando los atributos \textit{gender} y \textit{article} y expandiendo el atributo \textit{respuesta.pubmed\_keys}).
+
+\paragraph{}
+Finalmente podemos afirmar que \textbf{hemos cumplido parcialmente el objetivo principal \hyperref[op:OP1]{OP1}}, ya que con el modelo entrenado, seremos capaces de poder recomendar al profesional sanitario las referencias bibliográficas actuales útiles y personalizadas, que refuerce las tomas de decisiones en base a la información que se dispone de este. Lo que no hemos podido realizar, debido a las características de los datos aportados por el cliente es, realizar una clasificación (\textit{ranking}) de más interés a menos, como comentamos en el apartado \hyperref[section:limit]{Limitaciones detectadas}.
+
+\section{Trabajos de futuro}
+
+\paragraph{}
+Existen varias lineas por las que seguir avanzando con la idea de poder mejorar los resultados y que se ajusten a las necesidades de información que requieren los profesionales sanitarios. Esto dependerá de si se quiere continuar con la idea de solo indicar si un articulo es útil o no o si, por el contrario, se quiere realizar un \textit{ranking} valorando la utilidad de ese artículo. A continuación comentamos algunas lineas de futuro en base a estas dos opciones:
+
+
+\subsection{Mejorar el modelo actual}
+\paragraph{•} Mejorar el actual modelo de Bosques aleatorios añadiendo más observaciones para mejorar la predicción de este. A medida que el conjunto de datos validado por los profesionales sanitarios aumente, más preciso y acotado sera el modelo y mejores resultados proporcionará.
+
+\paragraph{•} Valorar si otros modelos predictivos tienen mejor resultado o están mejor optimizados en rendimiento para obtener el resultado final. Igual que en el caso anterior, a medida que el conjunto de datos validado por los profesionales sanitarios aumente, se puede probar a entrenar y validar otros modelos para comparar su resultado con el modelo de Bosques aleatorios, igual que hemos hecho en este documento. Un posible modelo a usar para comparar resultados puede ser el modelo de Máquinas de vector soporte '\textit{Support Vector Machines}', que como hemos podido ver en este \hyperref[resultados:svm]{documento}, ha dado resultados bastante próximos al modelo de Bosques aleatorios. También se puede probar con otros modelos clasificatorios como el modelo de \textit{Regresión Logística} o el \textit{K-Nearest-Neighbor o K-NN} (ambos vistos en este documento) pero también se pueden probar otros, como el modelo de \textit{Arboles decisionales}, \textit{Redes Neuronales Bayesianas} o el modelo \textit{Probit} (que no se han podido evaluar en este documento por falta de tiempo) entre otras muchas opciones.
+
+\paragraph{•} Valorar si, a medida que el conjunto de datos validado por los profesionales sanitarios aumenta, se altera la importancia de los atributos relevantes que el anterior \textit{PCA} nos indico. Es común que, cuando el número de atributos es grande, se pase solo al modelo los atributos que son dominantes en el conjunto de datos (utilizando el \textit{PCA} para saber cuales son, como se ha hecho en este documento). Puede pasar que, a medida que el volumen de datos aumente, los atributos dominantes cambien y esto no quedara reflejado en el modelo, haciendo que su nivel de precisión no crezca (o incluso que descienda). Es importante realizar este estudio cada cierto tiempo para tener la certeza de que nuestros atributos predominantes no han variado.
+
+\subsection{Crear un modelo capaz de realizar un ranking de utilidad}
+\paragraph{•} En el caso de que se consiga obtener datos con el detalle del nivel del valor de la utilidad que tienen los documentos para los profesionales sanitarios, la estrategia a seguir seria diferente a la realizada en este documento (ya que pasamos de predecir un valor binario (0,1) a un rango de valores (conocido como series temporales o \textit{time series}). Para realizar la predicción de estos valores se han de usar otros tipos de modelos predictivos como modelos de regresión o modelos de redes neuronales entre otras posibilidades, pero es complicado recomendar un modelo en concreto. Se deberá hacer el estudio comparando varios modelos, como se ha hecho en este documento, para valorar cual se acerca más a un resultado valido.
