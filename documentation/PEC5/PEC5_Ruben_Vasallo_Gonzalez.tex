@@ -5,8 +5,8 @@
 \usepackage{subcaption}
 
 % Notas
-\usepackage{pgfpages}
-\setbeameroption{show notes on second screen=right}
+%\usepackage{pgfpages}
+%\setbeameroption{show notes on second screen=right}
 
 % Datos
 \title{Clasificador Documentos Médicos HOPE}
@@ -124,13 +124,12 @@
   - Conjunto de datos con poco volumen. \newline
   - No todas las observaciones tienen indicado el atributo a predecir (utilidad). \newline
   - No se puede realizar un \textit{ranking} con la información actual. \newline
-  - Para intentar ganar algo de volumen se decide expandir el atributo pubmed\_keys para
+  - Para intentar ganar algo de volumen se decide expandir el atributo pubmed\_keys para tener mas volumen de datos y detectar si algunas keywords tienen más importancia que otros. \newline
   - Se decide con el cliente hacer un clasificador binario para indicar si el articulo es útil o no. Si se consigue el detalle de la utilidad durante el transcurso del ejercicio se volvería a objetivo principal. \newline
-  - Como existen observaciones sin el atributo utilidad, se acuerda intentar enriquecer el conjunto de datos basándonos en los atributos que si tienen informado el atributo a predecir. \newline
-  - También se decide generar un segundo conjunto de datos partiendo del conjunto de datos original pero expandiendo el atributo \textit{pubmed\_keys} para ver si la información de ese atributo a nivel individual puede ser un valor determinante.
-  
+  - Como existen observaciones sin el atributo utilidad, se acuerda intentar enriquecer el conjunto de datos basándonos en los atributos que si tienen informado el atributo a predecir.
   }
   \note<2>{
+  - También se decide generar un segundo conjunto de datos partiendo del conjunto de datos original pero expandiendo el atributo \textit{pubmed\_keys} para ver si la información de ese atributo a nivel individual puede ser un valor determinante. \newline
   - Se observa el conjunto de datos sesgado en el atributo a predecir y en el atributo \textit{pubmed\_keys}. Esto afectara a que la mayoría de modelos seguramente estarán sobreajustados.
   }
 \end{frame}
@@ -171,8 +170,7 @@
     \end{figure}
   \end{itemize}	
   \note{
-  La diferencia entre el conjunto 1 y 2 seguramente este debido a que el conjunto completo contiene un gran volumen de observaciones con el atributo \textit{utilidad} sin definir, lo que hace que prácticamente cualquier
-valor que tengan los atributos se acaben asociando a un resultado sin definir.
+  La diferencia entre el conjunto 1 y 2 seguramente este debido a que el conjunto completo contiene un gran volumen de observaciones con el atributo \textit{utilidad} sin definir, lo que hace que prácticamente cualquier valor que tengan los atributos se acaben asociando a un resultado sin definir.
   }
 \end{frame}
 
@@ -194,7 +192,7 @@ valor que tengan los atributos se acaben asociando a un resultado sin definir.
   \end{itemize}
   \note{
   - Conjunto 1 con age, diagnostic\_main, gender, artículo, mes y año del articulo, pubmed\_keys y cogiendo solo las observaciones que se ha informado el atributo utilidad. \newline
-  - Conjunto 2
+  - Conjunto 2 \newline
   - Se aplican a los dos conjuntos las transformaciones mencionadas anteriormente.
   }
 \end{frame}
@@ -234,7 +232,7 @@ valor que tengan los atributos se acaben asociando a un resultado sin definir.
   \textbf{Nota}: Se utilizaron los mismos conjuntos para los 3 modelos y se aplican las mismas transformaciones mencionadas anteriormente.
   \note{
   - Conjunto 1 con age, diagnostic\_main, gender, artículo, mes y año del articulo, pubmed\_keys y cogiendo solo las observaciones que se ha informado el atributo utilidad. \newline
-  - Conjunto 2
+  - Conjunto 2 \newline
   - Se aplican a los dos conjuntos las transformaciones mencionadas anteriormente.
   }
 \end{frame}
@@ -320,7 +318,7 @@ valor que tengan los atributos se acaben asociando a un resultado sin definir.
   \note{
   - El modelo que mejor precisión da es el Bosques aleatorios. \newline
   - Para poder predecir nuevos resultados, sera necesario aplicar a estos, las transformaciones que se han aplicado al conjunto 2.\newline
-  Nota: No añadimos a la comparativa el modelo K-NN ya que, aunque se podría utilizar como modelo predictivo igual que en los otros casos, debido a que no se entreno con los mismos atributos que los otros modelos.
+  \textbf{Nota}: No añadimos a la comparativa el modelo K-NN ya que, aunque se podría utilizar como modelo predictivo igual que en los otros casos, debido a que no se entreno con los mismos atributos que los otros modelos.
   }
 \end{frame}
 
@@ -343,7 +341,7 @@ valor que tengan los atributos se acaben asociando a un resultado sin definir.
 
 {
 \usebackgroundtemplate{\includegraphics[width=\paperwidth]{images/background.jpg}}
-\begin{frame}{Trabajos futuro}
+\begin{frame}{Gracias}
   \huge
   Gracias por esta oportunidad
   
